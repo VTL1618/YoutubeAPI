@@ -23,6 +23,7 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         
         translatesAutoresizingMaskIntoConstraints = false
         
+        // за расстояние между ячейками у нас отвечает layout, свойство minimumLineSpacing
         layout.minimumLineSpacing = Constants.galleryMinimumLineSpacing
         
         // и св-во CollectionView, которое отвечает за принятие отступов

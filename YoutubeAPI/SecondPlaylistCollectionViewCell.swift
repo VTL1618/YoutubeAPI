@@ -1,5 +1,5 @@
 //
-//  FirstPlaylistCollectionViewCell.swift
+//  SecondPlaylistCollectionViewCell.swift
 //  YoutubeAPI
 //
 //  Created by Vitaly Zubenko on 27.06.2022.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-class FirstPlaylistCollectionViewCell: UICollectionViewCell {
+class SecondPlaylistCollectionViewCell: UICollectionViewCell {
     
-    static let reuseId = "FirstPlaylistCollectionViewCell"
+    static let reuseId = "SecondPlaylistCollectionViewCell"
     
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
@@ -17,13 +17,6 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        mainImageView.layer.cornerRadius = 8
-        mainImageView.clipsToBounds = true
-    }
     
     let nameOfVideo: UILabel = {
         let label = UILabel()
@@ -41,6 +34,13 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        mainImageView.layer.cornerRadius = 8
+        mainImageView.clipsToBounds = true
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -51,8 +51,9 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
         // mainImageView constraints
         mainImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         mainImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        mainImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        mainImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1/1.65).isActive = true
+        mainImageView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        mainImageView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        mainImageView.heightAnchor.constraint(equalTo: mainImageView.widthAnchor).isActive = true
         
         // nameOfVideo constraints
         nameOfVideo.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
