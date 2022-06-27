@@ -1,11 +1,4 @@
 
-//
-//  TopChannelModel.swift
-//  YoutubeAPI
-//
-//  Created by Vitaly Zubenko on 23.06.2022.
-//
-
 import Foundation
 import UIKit
 

@@ -30,8 +30,8 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
     
     let numberOfSubscribers: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-        label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label.textColor = #colorLiteral(red: 0.6234598756, green: 0.6235695481, blue: 0.6234529018, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
