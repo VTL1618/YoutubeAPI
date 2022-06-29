@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,21 +33,6 @@
             </objects>
             <point key="canvasLocation" x="594" y="61"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="bmR-Qw-hEk">
-            <objects>
-                <viewController id="RuR-L3-20X" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="dcV-3s-L7p">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="h5S-uR-hKz"/>
-                        <color key="backgroundColor" systemColor="systemTealColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JXB-y2-HJc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1354" y="61"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="l32-hf-e6x">
             <objects>
@@ -72,9 +56,4 @@
             <point key="canvasLocation" x="-180" y="61"/>
         </scene>
     </scenes>
-    <resources>
-        <systemColor name="systemTealColor">
-            <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-    </resources>
 </document>
