@@ -52,6 +52,10 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+    }
+    
     // MARK: - Filling with content
     
     func setContentFor(channels: [TopChannelModel]) {

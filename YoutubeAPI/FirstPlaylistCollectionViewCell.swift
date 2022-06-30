@@ -41,6 +41,8 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    var video: Video?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -66,6 +68,39 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setCell(_ video: Video) {
+        
+        self.video = video
+        
+        guard self.video != nil else { return }
+        
+        // Set title
+        self.nameOfVideo.text = video.title
+        
+        // Set thumbnail
+        guard self.video?.thumbnail != nil else { return }
+        let url = URL(string: self.video!.thumbnail)
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: url!) { (data, response, error) in
+            
+            if error == nil && data != nil {
+                
+                if url!.absoluteString != self.video?.thumbnail {
+                    return
+                }
+                
+                let image = UIImage(data: data!)
+                
+                DispatchQueue.main.async {
+                    self.mainImageView.image = image
+                }
+                
+            }
+            
+        }
+        dataTask.resume()
     }
     
 }

@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     
     // Two constants
     let playerHeight: CGFloat = 600
-    let playerHandleAreaHeight: CGFloat = 64
+    let playerHandleAreaHeight: CGFloat = 56
     
     var playerVisible = false
     var nextState: PlayerState {
@@ -41,9 +41,7 @@ class ViewController: UIViewController {
     
     var timer = Timer()
     var counter = 0
-    
-    var model = Model()
-    
+        
     var firstPlaylistName: UILabel = {
         let label = UILabel()
         label.text = "Playlist #1"
@@ -109,7 +107,7 @@ class ViewController: UIViewController {
         firstPlaylistCollectionView.topAnchor.constraint(equalTo: firstPlaylistName.bottomAnchor, constant: 19).isActive = true
         firstPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 130).isActive = true
         
-        firstPlaylistCollectionView.setContentFor(playlist: FirstPlaylistModel.fetchVideos())
+//        firstPlaylistCollectionView.fetchVideos(Model.detVideos())
         
         // MARK: - add constraints for secondPlaylistName
         secondPlaylistName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
@@ -128,9 +126,7 @@ class ViewController: UIViewController {
         
         // Setup our player
         setupPlayer()
-        
-        model.detVideos()
-        
+             
     }
     
     @objc func automaticScrollImage() {

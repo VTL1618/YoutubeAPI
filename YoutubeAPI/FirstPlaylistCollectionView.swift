@@ -7,9 +7,10 @@
 
 import UIKit
 
-class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    var firstPlaylist: [FirstPlaylistModel] = []
+class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, ModelDelegate {
+  
+    var model = Model()
+    var firstPlaylist: [Video] = []
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -21,6 +22,8 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
         dataSource = self
         register(FirstPlaylistCollectionViewCell.self, forCellWithReuseIdentifier: FirstPlaylistCollectionViewCell.reuseId)
         
+        model.delegate = self
+        
         translatesAutoresizingMaskIntoConstraints = false
         
         layout.minimumLineSpacing = ConstantsForPlaylists.galleryMinimumLineSpacing
@@ -29,10 +32,23 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
         
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
+        
+        model.detVideos()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Model Delegate
+    
+    func fetchVideos(_ videos: [Video]) {
+        self.firstPlaylist = videos
+        
+        // Refresh
+        DispatchQueue.main.async {
+            self.reloadData()
+        }
     }
     
     // MARK: - Data Source
@@ -43,17 +59,24 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueReusableCell(withReuseIdentifier: FirstPlaylistCollectionViewCell.reuseId, for: indexPath) as! FirstPlaylistCollectionViewCell
-        cell.mainImageView.image = firstPlaylist[indexPath.row].coverImage
-        cell.nameOfVideo.text = firstPlaylist[indexPath.row].nameOfVideo
-        cell.numberOfViews.text = firstPlaylist[indexPath.row].numberOfViews
+//        cell.mainImageView.image = firstPlaylist[indexPath.row].thumbnail
+//        cell.nameOfVideo.text = firstPlaylist[indexPath.row].title
+//        cell.numberOfViews.text = firstPlaylist[indexPath.row].numberOfViews
+        let video = self.firstPlaylist[indexPath.row]
+        cell.setCell(video)
+        
         return cell
     }
     
-    // MARK: - Filling with content
-    
-    func setContentFor(playlist: [FirstPlaylistModel]) {
-        self.firstPlaylist = playlist
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
     }
+    
+//    // MARK - Filling with content
+//
+//    func setContentFor(playlist: [Video]) {
+//        self.firstPlaylist = playlist
+//    }
     
 }
 

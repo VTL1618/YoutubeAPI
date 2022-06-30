@@ -7,7 +7,13 @@
 
 import Foundation
 
+protocol ModelDelegate {
+    func fetchVideos(_ videos: [Video])
+}
+
 class Model {
+    
+    var delegate: ModelDelegate?
     
     func detVideos() {
         
@@ -32,15 +38,19 @@ class Model {
                 // Forse unwraped! because we alredy checked if that is not nil
                 // And this method - throws, so we need let and try
                 
-                dump(response)
+                if response.items != nil {
+                    
+                    DispatchQueue.main.async {
+                        self.delegate?.fetchVideos(response.items!)
+                    }
+                    
+                }
+                
+//                dump(response)
                 
             } catch {
                 
-                
-                
             }
-            
-            
             
         }
         

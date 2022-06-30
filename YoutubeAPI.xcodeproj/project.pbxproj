@@ -90,6 +90,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C95DD3D9286DCB0300E72324 /* заглушки */ = {
+			isa = PBXGroup;
+			children = (
+				C9E61E1A2864EFD5009777C5 /* TopChannelModel.swift */,
+				C91403BE286901340088680B /* FirstPlaylistModel.swift */,
+				C9C1A8712869D12C0018C380 /* SecondPlaylistModel.swift */,
+			);
+			name = "заглушки";
+			sourceTree = "<group>";
+		};
 		C968E137286294B700A8674D = {
 			isa = PBXGroup;
 			children = (
@@ -123,9 +133,10 @@
 		C9C1A86A2869C8D20018C380 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C9E61E1A2864EFD5009777C5 /* TopChannelModel.swift */,
-				C91403BE286901340088680B /* FirstPlaylistModel.swift */,
-				C9C1A8712869D12C0018C380 /* SecondPlaylistModel.swift */,
+				C95DD3D9286DCB0300E72324 /* заглушки */,
+				C9FC4736286D16A600520795 /* Video.swift */,
+				C9FC4738286D17E500520795 /* Model.swift */,
+				C9FC473A286D97B000520795 /* Response.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -142,9 +153,6 @@
 				C9C1A8732869D2BD0018C380 /* SecondPlaylistCollectionViewCell.swift */,
 				C965E520286B2E0A000EF4C9 /* PlayerViewController.swift */,
 				C9FC4734286D0F9600520795 /* APIConstants.swift */,
-				C9FC4736286D16A600520795 /* Video.swift */,
-				C9FC4738286D17E500520795 /* Model.swift */,
-				C9FC473A286D97B000520795 /* Response.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
