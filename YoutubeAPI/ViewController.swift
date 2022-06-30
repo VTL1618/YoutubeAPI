@@ -42,6 +42,8 @@ class ViewController: UIViewController {
     var timer = Timer()
     var counter = 0
     
+    var model = Model()
+    
     var firstPlaylistName: UILabel = {
         let label = UILabel()
         label.text = "Playlist #1"
@@ -126,6 +128,8 @@ class ViewController: UIViewController {
         
         // Setup our player
         setupPlayer()
+        
+        model.detVideos()
         
     }
     
