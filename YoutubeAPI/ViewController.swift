@@ -83,9 +83,7 @@ class ViewController: UIViewController {
         topChannelsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         topChannelsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6).isActive = true
         topChannelsCollectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        
-        topChannelsCollectionView.setContentFor(channels: TopChannelModel.fetchChannels())
-        
+                
         // MARK: - add constraints for dots
         dots.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         dots.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true

@@ -11,6 +11,8 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
     
     static let reuseId = "TopChannelsCollectionViewCell"
     
+    var video: Video?
+    
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = #colorLiteral(red: 0.113761507, green: 0.1048973277, blue: 0.150441885, alpha: 1)
@@ -74,4 +76,44 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         self.clipsToBounds = true
     }
     
+    func setCell(_ video: Video) {
+        
+        self.video = video
+        guard self.video != nil else { return }
+        
+        self.nameOfChannel.text = video.title
+        
+        self.numberOfSubscribers.text = video.numberOfViews
+        
+        guard self.video?.thumbnail != nil else { return }
+        
+        if let cacheData = CacheManager.getVideoCache(self.video!.thumbnail) {
+            self.mainImageView.image = UIImage(data: cacheData)
+            return
+        }
+        
+        let url = URL(string: self.video!.thumbnail)
+        let session = URLSession.shared
+        let dataData = session.dataTask(with: url!) { (data, response, error) in
+            
+            if error == nil && data != nil {
+                
+                CacheManager.setVideoCache(url!.absoluteString, data)
+                
+                if url!.absoluteString != self.video?.thumbnail {
+                    return
+                }
+                
+                let image = UIImage(data: data!)
+                
+                DispatchQueue.main.async {
+                    self.mainImageView.image = image
+                }
+                
+            }
+            
+        }
+        dataData.resume()
+    }
+        
 }

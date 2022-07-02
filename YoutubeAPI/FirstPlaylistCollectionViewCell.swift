@@ -80,7 +80,7 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
         self.nameOfVideo.text = video.title
         
         // Set number of views
-        self.numberOfViews.text = video.numberofViews
+        self.numberOfViews.text = video.numberOfViews
         
         // Set thumbnail
         guard self.video?.thumbnail != nil else { return }
@@ -90,7 +90,10 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
             
             // Set the thumbnail imageView
             self.mainImageView.image = UIImage(data: cacheData)
+            
+            // And return because we don't want to further implementation if the cache is exist
             return
+            
         }
         
         let url = URL(string: self.video!.thumbnail)

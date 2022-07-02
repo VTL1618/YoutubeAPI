@@ -12,7 +12,7 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
     // Kick off this network call
     var model = Model()
     
-    var firstPlaylist: [Video] = []
+    private var firstPlaylist: [Video] = []
     
     init() {
         let layout = UICollectionViewFlowLayout()

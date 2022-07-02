@@ -7,9 +7,11 @@
 
 import UIKit
 
-class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource {
+class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, ModelDelegate {
     
-    private var channels: [TopChannelModel] = []
+    var model = Model()
+    
+    private var channels: [Video] = []
 
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -32,6 +34,10 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
         isPagingEnabled = true
+        
+        model.delegate = self
+        
+        model.detVideos()
     }
     
     required init?(coder: NSCoder) {
@@ -46,9 +52,10 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueReusableCell(withReuseIdentifier: TopChannelsCollectionViewCell.reuseId, for: indexPath) as! TopChannelsCollectionViewCell
-        cell.mainImageView.image = channels[indexPath.row].coverImage
-        cell.nameOfChannel.text = channels[indexPath.row].nameOfChannel
-        cell.numberOfSubscribers.text = channels[indexPath.row].numberOfSubscribers
+        
+        let video = self.channels[indexPath.row]
+        cell.setCell(video)
+        
         return cell
     }
     
@@ -58,10 +65,14 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
     
     // MARK: - Filling with content
     
-    func setContentFor(channels: [TopChannelModel]) {
-        self.channels = channels
+    func fetchVideos(_ videos: [Video]) {
+        self.channels = videos
+        
+        // Refresh
+        DispatchQueue.main.async {
+            self.reloadData()
+        }
     }
-    // будем вызывать ее там, от куда мы будем получать наши данные. В нашем случае мы будем получать их в файле ViewController
 
 }
 
