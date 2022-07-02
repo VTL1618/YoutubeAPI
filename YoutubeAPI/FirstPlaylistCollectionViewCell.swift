@@ -11,6 +11,8 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
     
     static let reuseId = "FirstPlaylistCollectionViewCell"
     
+    var video: Video?
+    
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -28,6 +30,7 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
     let nameOfVideo: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.numberOfLines = 0
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -40,9 +43,7 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    var video: Video?
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -71,21 +72,35 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
     }
     
     func setCell(_ video: Video) {
-        
+
         self.video = video
-        
         guard self.video != nil else { return }
         
         // Set title
         self.nameOfVideo.text = video.title
         
+        // Set number of views
+        self.numberOfViews.text = video.numberofViews
+        
         // Set thumbnail
         guard self.video?.thumbnail != nil else { return }
+        
+        // Check cache before downloading data
+        if let cacheData = CacheManager.getVideoCache(self.video!.thumbnail) {
+            
+            // Set the thumbnail imageView
+            self.mainImageView.image = UIImage(data: cacheData)
+            return
+        }
+        
         let url = URL(string: self.video!.thumbnail)
         let session = URLSession.shared
         let dataTask = session.dataTask(with: url!) { (data, response, error) in
             
             if error == nil && data != nil {
+                
+                // Save the data in the cache
+                CacheManager.setVideoCache(url!.absoluteString, data)
                 
                 if url!.absoluteString != self.video?.thumbnail {
                     return
@@ -96,6 +111,8 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
                 DispatchQueue.main.async {
                     self.mainImageView.image = image
                 }
+                
+                // Now we must go in fetch that URL
                 
             }
             

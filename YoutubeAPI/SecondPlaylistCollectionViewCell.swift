@@ -11,9 +11,11 @@ class SecondPlaylistCollectionViewCell: UICollectionViewCell {
     
     static let reuseId = "SecondPlaylistCollectionViewCell"
     
+    var video: Video?
+    
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -21,6 +23,7 @@ class SecondPlaylistCollectionViewCell: UICollectionViewCell {
     let nameOfVideo: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.numberOfLines = 0
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -51,9 +54,10 @@ class SecondPlaylistCollectionViewCell: UICollectionViewCell {
         // mainImageView constraints
         mainImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         mainImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        mainImageView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        mainImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        mainImageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         mainImageView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
-        mainImageView.heightAnchor.constraint(equalTo: mainImageView.widthAnchor).isActive = true
+        mainImageView.heightAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         
         // nameOfVideo constraints
         nameOfVideo.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
@@ -67,6 +71,54 @@ class SecondPlaylistCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setCell(_ video: Video) {
+        
+        self.video = video
+        guard self.video != nil else { return }
+        
+        self.nameOfVideo.text = video.title
+        
+        self.numberOfViews.text = video.numberofViews
+        
+        guard self.video!.thumbnail != "" else { return }
+        
+        // Check cache before downloading data
+        if let cacheData = CacheManager.getVideoCache(self.video!.thumbnail) {
+            
+            // Set the thumbnail imageView
+            self.mainImageView.image = UIImage(data: cacheData)
+            return
+        }
+        
+        let url = URL(string: self.video!.thumbnail)
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: url!) { (data, response, error) in
+            
+            if error == nil && data != nil {
+                
+                // Save the data in the cache
+                CacheManager.setVideoCache(url!.absoluteString, data)
+                
+                if url!.absoluteString != self.video?.thumbnail {
+                    return
+                }
+                
+                if url!.absoluteString != self.video?.thumbnail {
+                    return
+                }
+                
+                let image = UIImage(data: data!)
+                
+                DispatchQueue.main.async {
+                    self.mainImageView.image = image
+                }
+                
+            }
+            
+        }
+        dataTask.resume()
     }
     
 }

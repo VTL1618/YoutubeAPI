@@ -7,9 +7,12 @@
 
 import UIKit
 
-class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate {
+class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, ModelDelegate {
     
-    var secondPlaylist: [SecondPlaylistModel] = []
+    // Kick off this network call
+    var model = Model()
+    
+    var secondPlaylist: [Video] = []
 
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -28,6 +31,10 @@ class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource
         
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
+        
+        model.delegate = self
+        
+        model.detVideos()
     }
     
     required init?(coder: NSCoder) {
@@ -42,16 +49,21 @@ class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueReusableCell(withReuseIdentifier: SecondPlaylistCollectionViewCell.reuseId, for: indexPath) as! SecondPlaylistCollectionViewCell
-        cell.mainImageView.image = secondPlaylist[indexPath.row].coverImage
-        cell.nameOfVideo.text = secondPlaylist[indexPath.row].nameOfVideo
-        cell.numberOfViews.text = secondPlaylist[indexPath.row].numberOfViews
+        
+        let video = self.secondPlaylist[indexPath.row]
+        cell.setCell(video)
+        
         return cell
     }
     
     // MARK: - Filling with content
     
-    func setContentFor(playlist: [SecondPlaylistModel]) {
-        self.secondPlaylist = playlist
+    func fetchVideos(_ videos: [Video]) {
+        self.secondPlaylist = videos
+        
+        DispatchQueue.main.async {
+            self.reloadData()
+        }
     }
     
 }

@@ -122,7 +122,7 @@ class ViewController: UIViewController {
         secondPlaylistCollectionView.topAnchor.constraint(equalTo: secondPlaylistName.bottomAnchor, constant: 19).isActive = true
         secondPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         
-        secondPlaylistCollectionView.setContentFor(playlist: SecondPlaylistModel.fetchVideos())
+//        secondPlaylistCollectionView.setContentFor(playlist: SecondPlaylistModel.fetchVideos())
         
         // Setup our player
         setupPlayer()
@@ -156,6 +156,8 @@ extension ViewController {
         
         // Now use our main view and add the visualEffectView as a Subview
         self.view.addSubview(visualEffectView)
+//        visualEffectView.isHidden = true
+        visualEffectView.isUserInteractionEnabled = false
         
         // Now we can already load our playerViewController with nibName (name of .xib)
         playerViewController = PlayerViewController(nibName: "PlayerViewController", bundle: nil)
@@ -248,9 +250,11 @@ extension ViewController {
             let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
                 switch state {
                 case .expanded:
+//                    self.visualEffectView.isHidden = false
                     self.visualEffectView.effect = UIBlurEffect(style: .dark)
                 case .collapsed:
                     self.visualEffectView.effect = nil
+//                    self.visualEffectView.isUserInteractionEnabled = false
                 }
             }
             

@@ -9,7 +9,9 @@ import UIKit
 
 class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, ModelDelegate {
   
+    // Kick off this network call
     var model = Model()
+    
     var firstPlaylist: [Video] = []
     
     init() {
@@ -21,9 +23,7 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
         delegate = self
         dataSource = self
         register(FirstPlaylistCollectionViewCell.self, forCellWithReuseIdentifier: FirstPlaylistCollectionViewCell.reuseId)
-        
-        model.delegate = self
-        
+                
         translatesAutoresizingMaskIntoConstraints = false
         
         layout.minimumLineSpacing = ConstantsForPlaylists.galleryMinimumLineSpacing
@@ -32,6 +32,8 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
         
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
+        
+        model.delegate = self
         
         model.detVideos()
     }
@@ -59,9 +61,11 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueReusableCell(withReuseIdentifier: FirstPlaylistCollectionViewCell.reuseId, for: indexPath) as! FirstPlaylistCollectionViewCell
+        
 //        cell.mainImageView.image = firstPlaylist[indexPath.row].thumbnail
 //        cell.nameOfVideo.text = firstPlaylist[indexPath.row].title
 //        cell.numberOfViews.text = firstPlaylist[indexPath.row].numberOfViews
+        
         let video = self.firstPlaylist[indexPath.row]
         cell.setCell(video)
         
