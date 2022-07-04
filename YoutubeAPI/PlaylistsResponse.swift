@@ -1,5 +1,5 @@
 //
-//  Response.swift
+//  PlaylistsResponse.swift
 //  YoutubeAPI
 //
 //  Created by Vitaly Zubenko on 30.06.2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Response: Decodable {
+struct PlaylistsResponse: Decodable {
     
     var items: [Video]?
     

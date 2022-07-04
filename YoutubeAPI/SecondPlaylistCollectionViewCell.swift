@@ -23,7 +23,7 @@ class SecondPlaylistCollectionViewCell: UICollectionViewCell {
     let nameOfVideo: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        label.numberOfLines = 0
+//        label.numberOfLines = 0
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -80,7 +80,7 @@ class SecondPlaylistCollectionViewCell: UICollectionViewCell {
         
         self.nameOfVideo.text = video.title
         
-        self.numberOfViews.text = video.numberOfViews
+        self.numberOfViews.text = "\(video.numberOfViews) просмотра"
         
         guard self.video!.thumbnail != "" else { return }
         
@@ -100,10 +100,6 @@ class SecondPlaylistCollectionViewCell: UICollectionViewCell {
                 
                 // Save the data in the cache
                 CacheManager.setVideoCache(url!.absoluteString, data)
-                
-                if url!.absoluteString != self.video?.thumbnail {
-                    return
-                }
                 
                 if url!.absoluteString != self.video?.thumbnail {
                     return

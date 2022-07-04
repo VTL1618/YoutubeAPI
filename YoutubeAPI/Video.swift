@@ -19,11 +19,13 @@ struct Video: Decodable {
         case snippet
         case thumbnails
         case high
-        case resourceId
+//        case resourceId
+        case statistics
         
+        case videoId = "id"
         case title
+        case numberOfViews = "viewCount"
         case thumbnail = "url"
-        case videoId
         
     }
     
@@ -44,9 +46,14 @@ struct Video: Decodable {
         self.thumbnail = try highContainer.decode(String.self, forKey: .thumbnail)
         
         // Parse Video ID
-        let resourceIdContainer = try snippetContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .resourceId)
+//        let resourceIdContainer = try snippetContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .resourceId)
         
-        self.videoId = try resourceIdContainer.decode(String.self, forKey: .videoId)
+        self.videoId = try container.decode(String.self, forKey: .videoId)
+        
+        // Parse numberOfViews
+        let statisticsContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .statistics)
+
+        self.numberOfViews = try statisticsContainer.decode(String.self, forKey: .numberOfViews)
         
     }
     

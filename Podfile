@@ -6,8 +6,8 @@ target 'YoutubeAPI' do
   use_frameworks!
 
   # Pods for YoutubeAPI
-    pod 'RxSwift', '6.5.0'
-    pod 'RxCocoa', '6.5.0'
-    pod 'Alamofire'
+  #  pod 'RxSwift', '6.5.0'
+  #  pod 'RxCocoa', '6.5.0'
+  #  pod 'Alamofire'
 
 end

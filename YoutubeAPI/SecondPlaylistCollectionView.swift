@@ -8,9 +8,9 @@
 import UIKit
 
 class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegate, ModelDelegate {
-    
+        
     // Kick off this network call
-    var model = Model()
+    var model = PlaylistsModel()
     
     var secondPlaylist: [Video] = []
 
@@ -34,7 +34,7 @@ class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource
         
         model.delegate = self
         
-        model.detVideos()
+        model.getVideos(playlist: APIConstants.SECOND_PLAYLIST_API)
     }
     
     required init?(coder: NSCoder) {
@@ -65,6 +65,10 @@ class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource
             self.reloadData()
         }
     }
+    
+//    func fetchNumberOfViews(_ views: [ChannelsModel]) {
+//        
+//    }
     
 }
 

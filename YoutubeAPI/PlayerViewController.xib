@@ -33,9 +33,6 @@
                                 <constraint firstAttribute="width" constant="36" id="Ise-7c-eG7"/>
                                 <constraint firstAttribute="height" constant="36" id="MxA-ew-iXu"/>
                             </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="keyPath" value="YES"/>
-                            </userDefinedRuntimeAttributes>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.86176259767807761" green="0.23377132214130891" blue="0.5841515005978648" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

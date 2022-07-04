@@ -83,7 +83,7 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         
         self.nameOfChannel.text = video.title
         
-        self.numberOfSubscribers.text = video.numberOfViews
+//        self.numberOfSubscribers.text = video.numberOfViews
         
         guard self.video?.thumbnail != nil else { return }
         

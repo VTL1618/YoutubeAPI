@@ -12,6 +12,7 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
     static let reuseId = "FirstPlaylistCollectionViewCell"
     
     var video: Video?
+//    var views: ChannelsModel?
     
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
@@ -30,7 +31,7 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
     let nameOfVideo: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        label.numberOfLines = 0
+//        label.numberOfLines = 0
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -80,7 +81,7 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
         self.nameOfVideo.text = video.title
         
         // Set number of views
-        self.numberOfViews.text = video.numberOfViews
+        self.numberOfViews.text = "\(video.numberOfViews) просмотра"
         
         // Set thumbnail
         guard self.video?.thumbnail != nil else { return }
@@ -121,6 +122,17 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
             
         }
         dataTask.resume()
+        
     }
+    
+//    func setCellWith(_ numberOfViews: ChannelsModel, for videoID: Video) {
+//    func setCellWithStat(_ views: NumberOfViews) {
+//
+//        self.views = views
+//        guard self.views != nil else { return }
+//
+//        self.numberOfViews.text = views.numberOfViews
+//
+//    }
     
 }

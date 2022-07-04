@@ -10,9 +10,10 @@ import UIKit
 class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, ModelDelegate {
   
     // Kick off this network call
-    var model = Model()
+    var playlistsModel = PlaylistsModel()
     
     private var firstPlaylist: [Video] = []
+//    private var videosWithStat: [ChannelsModel] = []
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -26,32 +27,43 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
                 
         translatesAutoresizingMaskIntoConstraints = false
         
-        layout.minimumLineSpacing = ConstantsForPlaylists.galleryMinimumLineSpacing
-        contentInset = UIEdgeInsets(top: 0, left: ConstantsForPlaylists.leftDistanceToView, bottom: 0, right: ConstantsForPlaylists.rightDistanceToView)
+        layout.minimumLineSpacing = ConstantsForPlaylist.galleryMinimumLineSpacing
+        contentInset = UIEdgeInsets(top: 0, left: ConstantsForPlaylist.leftDistanceToView, bottom: 0, right: ConstantsForPlaylist.rightDistanceToView)
         // свойство CollectionView, отвечающее за отступы ячеек от краев
         
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
         
-        model.delegate = self
+        playlistsModel.delegate = self
         
-        model.detVideos()
+        playlistsModel.getVideos(playlist: APIConstants.FIRST_PLAYLIST_API)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Model Delegate
+    // MARK: - PlaylistsModel Delegate
     
     func fetchVideos(_ videos: [Video]) {
         self.firstPlaylist = videos
+        
+//        playlistsModel.getNumberOfViews()
         
         // Refresh
         DispatchQueue.main.async {
             self.reloadData()
         }
     }
+    
+//    func fetchNumberOfViews(_ numbersOfViews: [ChannelsModel]) {
+//        self.videosWithStat = numbersOfViews
+//        
+//        // Refresh
+//        DispatchQueue.main.async {
+//            self.reloadData()
+//        }
+//    }
     
     // MARK: - Data Source
     
@@ -62,12 +74,12 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueReusableCell(withReuseIdentifier: FirstPlaylistCollectionViewCell.reuseId, for: indexPath) as! FirstPlaylistCollectionViewCell
         
-//        cell.mainImageView.image = firstPlaylist[indexPath.row].thumbnail
-//        cell.nameOfVideo.text = firstPlaylist[indexPath.row].title
-//        cell.numberOfViews.text = firstPlaylist[indexPath.row].numberOfViews
-        
         let video = self.firstPlaylist[indexPath.row]
         cell.setCell(video)
+        
+//        let views = self.videosWithStat[indexPath.row]
+//        cell.setCellWithStat(views)
+//        cell.numberOfViews.text = self.numbersOfViews[indexPath.row]
         
         return cell
     }
@@ -87,7 +99,7 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
 extension FirstPlaylistCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: ConstantsForPlaylists.galleryItemWidth, height: frame.height)
+        return CGSize(width: ConstantsForPlaylist.galleryItemWidth, height: frame.height)
     }
     
 }

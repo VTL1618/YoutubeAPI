@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
 
 enum PlayerState {
     case expanded
@@ -63,12 +61,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dots.numberOfPages = TopChannelModel.fetchChannels().count
-        
-        DispatchQueue.main.async { [self] in
-            timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
-        }
-        
         // добавим collection views и элементы на экран
         // делается это через view
         view.addSubview(topChannelsCollectionView)
@@ -88,9 +80,11 @@ class ViewController: UIViewController {
         dots.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         dots.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         dots.topAnchor.constraint(equalTo: topChannelsCollectionView.bottomAnchor, constant: 10).isActive = true
-        dots.widthAnchor.constraint(equalToConstant: 200).isActive = true
+//        dots.widthAnchor.constraint(equalToConstant: 200).isActive = true
         
         dots.translatesAutoresizingMaskIntoConstraints = false
+        
+        dots.numberOfPages = self.topChannelsCollectionView.getCountOfChannels()
         
         // MARK: - add constraints for firstPlaylistName
         firstPlaylistName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
@@ -105,7 +99,7 @@ class ViewController: UIViewController {
         firstPlaylistCollectionView.topAnchor.constraint(equalTo: firstPlaylistName.bottomAnchor, constant: 19).isActive = true
         firstPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 130).isActive = true
         
-//        firstPlaylistCollectionView.fetchVideos(Model.detVideos())
+//        firstPlaylistCollectionView.fetchVideos(PlaylistsModel.getVideos())
         
         // MARK: - add constraints for secondPlaylistName
         secondPlaylistName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
@@ -119,8 +113,10 @@ class ViewController: UIViewController {
         secondPlaylistCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         secondPlaylistCollectionView.topAnchor.constraint(equalTo: secondPlaylistName.bottomAnchor, constant: 19).isActive = true
         secondPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        
-//        secondPlaylistCollectionView.setContentFor(playlist: SecondPlaylistModel.fetchVideos())
+                        
+//        DispatchQueue.main.async { [self] in
+//            timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
+//        }
         
         // Setup our player
         setupPlayer()

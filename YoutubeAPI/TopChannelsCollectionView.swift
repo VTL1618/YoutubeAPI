@@ -9,7 +9,7 @@ import UIKit
 
 class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, ModelDelegate {
     
-    var model = Model()
+    var model = PlaylistsModel()
     
     private var channels: [Video] = []
 
@@ -26,10 +26,10 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         translatesAutoresizingMaskIntoConstraints = false
         
         // за расстояние между ячейками у нас отвечает layout, свойство minimumLineSpacing
-        layout.minimumLineSpacing = Constants.galleryMinimumLineSpacing
+        layout.minimumLineSpacing = ConstantsForChannels.galleryMinimumLineSpacing
         
         // и св-во CollectionView, которое отвечает за принятие отступов
-        contentInset = UIEdgeInsets(top: 0, left: Constants.leftDistanceToView, bottom: 0, right: Constants.rightDistanceToView)
+        contentInset = UIEdgeInsets(top: 0, left: ConstantsForChannels.leftDistanceToView, bottom: 0, right: ConstantsForChannels.rightDistanceToView)
         
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
@@ -37,11 +37,22 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         
         model.delegate = self
         
-        model.detVideos()
+        model.getVideos(playlist: APIConstants.SECOND_PLAYLIST_API)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - PlaylistsModel Delegate
+    
+    func fetchVideos(_ videos: [Video]) {
+        self.channels = videos
+        
+        // Refresh
+        DispatchQueue.main.async {
+            self.reloadData()
+        }
     }
     
     // MARK: - Data Source
@@ -62,24 +73,20 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
     }
-    
-    // MARK: - Filling with content
-    
-    func fetchVideos(_ videos: [Video]) {
-        self.channels = videos
-        
-        // Refresh
-        DispatchQueue.main.async {
-            self.reloadData()
-        }
-    }
 
 }
 
 extension TopChannelsCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: Constants.galleryItemWidth, height: frame.height)
+        return CGSize(width: ConstantsForChannels.galleryItemWidth, height: frame.height)
     }
     
+}
+
+extension TopChannelsCollectionView {
+    func getCountOfChannels() -> Int {
+        let count = self.channels.count
+        return count
+    }
 }
