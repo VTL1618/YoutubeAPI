@@ -7,13 +7,18 @@
 
 import UIKit
 
+protocol FirstPlaylistCollectionViewDelegate: AnyObject {
+    func playVideo(video: String)
+}
+
 class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, ModelDelegate {
   
     // Kick off this network call
     var playlistsModel = PlaylistsModel()
     
     private var firstPlaylist: [Video] = []
-//    private var videosWithStat: [ChannelsModel] = []
+    
+    weak var delegatePlay: FirstPlaylistCollectionViewDelegate?
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -56,15 +61,6 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
         }
     }
     
-//    func fetchNumberOfViews(_ numbersOfViews: [ChannelsModel]) {
-//        self.videosWithStat = numbersOfViews
-//        
-//        // Refresh
-//        DispatchQueue.main.async {
-//            self.reloadData()
-//        }
-//    }
-    
     // MARK: - Data Source
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -86,13 +82,14 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+//        delegatePlay?.playVideo(video: self.firstPlaylist[indexPath.row].title)
+        
+        print("selected video")
+        
+//        let destination = PlayerViewController()
+//        self.presen
+        
     }
-    
-//    // MARK - Filling with content
-//
-//    func setContentFor(playlist: [Video]) {
-//        self.firstPlaylist = playlist
-//    }
     
 }
 

@@ -21,9 +21,6 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="770"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dudFace" translatesAutoresizingMaskIntoConstraints="NO" id="Cpw-3X-Wlh">
-                    <rect key="frame" x="16" y="60" width="382" height="720"/>
-                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g55-Ba-qMZ">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                     <subviews>
@@ -46,12 +43,9 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Cpw-3X-Wlh" secondAttribute="trailing" constant="16" id="06q-Ha-arA"/>
                 <constraint firstItem="g55-Ba-qMZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="MP1-jH-fQD"/>
                 <constraint firstItem="g55-Ba-qMZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="XQ0-YK-TLt"/>
-                <constraint firstItem="Cpw-3X-Wlh" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="kQb-cn-zvC"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="g55-Ba-qMZ" secondAttribute="trailing" id="odb-mh-2w7"/>
-                <constraint firstItem="Cpw-3X-Wlh" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="uAT-Ji-lL6"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="137.68115942028987" y="134.59821428571428"/>
@@ -59,7 +53,6 @@
     </objects>
     <resources>
         <image name="Close_Open" width="31" height="17"/>
-        <image name="dudFace" width="1280" height="720"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -55,7 +55,7 @@ class SecondPlaylistCollectionViewCell: UICollectionViewCell {
         mainImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         mainImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         mainImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        mainImageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+//        mainImageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         mainImageView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
         mainImageView.heightAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         

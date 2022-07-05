@@ -57,7 +57,7 @@ class ViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -294,4 +294,42 @@ extension ViewController {
         }
     }
     
+}
+
+extension ViewController {
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+//        var destination: FirstPlaylistCollectionView = segue.destination as! FirstPlaylistCollectionView
+//        let text = (sender as! FirstPlaylistCollectionViewCell).nameOfVideo
+//        text.
+//
+//        print(text)
+        
+        
+//        let firstPlaylistCollectionView = segue.destination as! FirstPlaylistCollectionView
+//        firstPlaylistCollectionView.delegatePlay = self
+        
+//        if (segue.identifier == "TopChannelsCollectionViewCell") {
+//
+//        } else if (segue.identifier == "FirstPlaylistCollectionViewCell") {
+//
+//
+//
+//            animateTransitionIfNeeded(state: .collapsed, duration: 0.9)
+//
+////            let textTest = (sender as! FirstPlaylistCollectionViewCell).nameOfVideo.text
+////            print("cet textTest - \(textTest)")
+//        } else if (segue.identifier == "SecondPlaylistCollectionViewCell") {
+//
+//        }
+        
+    }
+    
+}
+
+extension ViewController: FirstPlaylistCollectionViewDelegate {
+    func playVideo(video: String) {
+        print(video)
+    }
 }
