@@ -56,6 +56,16 @@ class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let selectedVideo = secondPlaylist[indexPath.row]
+        
+        let dictionaryFromVideo = selectedVideo.toDict()
+        
+        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "selectedCell"), object: nil, userInfo: dictionaryFromVideo)
+        
+    }
+    
     // MARK: - Filling with content
     
     func fetchVideos(_ videos: [Video]) {
@@ -65,10 +75,6 @@ class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource
             self.reloadData()
         }
     }
-    
-//    func fetchNumberOfViews(_ views: [ChannelsModel]) {
-//        
-//    }
     
 }
 

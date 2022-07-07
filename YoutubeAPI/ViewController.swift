@@ -18,6 +18,10 @@ class ViewController: UIViewController {
     private var firstPlaylistCollectionView = FirstPlaylistCollectionView()
     private var secondPlaylistCollectionView = SecondPlaylistCollectionView()
     
+    static var listOfChannelsVideos: [Video] = []
+    static var firstPlaylistVideos: [Video] = []
+    static var secondPlaylistVideos: [Video] = []
+    
     var playerViewController: PlayerViewController!
     var visualEffectView: UIVisualEffectView!
     
@@ -42,7 +46,7 @@ class ViewController: UIViewController {
         
     var firstPlaylistName: UILabel = {
         let label = UILabel()
-        label.text = "Playlist #1"
+        label.text = "Mac"
         label.font = UIFont.systemFont(ofSize: 27, weight: .bold)
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -51,7 +55,7 @@ class ViewController: UIViewController {
     
     var secondPlaylistName: UILabel = {
         let label = UILabel()
-        label.text = "Playlist #2"
+        label.text = "iPhone"
         label.font = UIFont.systemFont(ofSize: 27, weight: .bold)
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +88,9 @@ class ViewController: UIViewController {
         
         dots.translatesAutoresizingMaskIntoConstraints = false
         
-        dots.numberOfPages = self.topChannelsCollectionView.getCountOfChannels()
+//        dots.numberOfPages = self.topChannelsCollectionView.getCountOfChannels()
+        
+        dots.numberOfPages = 3
         
         // MARK: - add constraints for firstPlaylistName
         firstPlaylistName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
@@ -96,7 +102,7 @@ class ViewController: UIViewController {
         // MARK: - add constraints for firstPlaylistCollectionView
         firstPlaylistCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         firstPlaylistCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        firstPlaylistCollectionView.topAnchor.constraint(equalTo: firstPlaylistName.bottomAnchor, constant: 19).isActive = true
+        firstPlaylistCollectionView.topAnchor.constraint(equalTo: firstPlaylistName.bottomAnchor, constant: 15).isActive = true
         firstPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 130).isActive = true
         
 //        firstPlaylistCollectionView.fetchVideos(PlaylistsModel.getVideos())
@@ -111,16 +117,19 @@ class ViewController: UIViewController {
         // MARK: - add constraints for secondPlaylistCollectionView
         secondPlaylistCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         secondPlaylistCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        secondPlaylistCollectionView.topAnchor.constraint(equalTo: secondPlaylistName.bottomAnchor, constant: 19).isActive = true
+        secondPlaylistCollectionView.topAnchor.constraint(equalTo: secondPlaylistName.bottomAnchor, constant: 15).isActive = true
         secondPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
                         
-//        DispatchQueue.main.async { [self] in
-//            timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
-//        }
+        DispatchQueue.main.async { [self] in
+            timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
+        }
         
         // Setup our player
         setupPlayer()
-             
+        
+        // Open Player By Tap On Cell
+        NotificationCenter.default.addObserver(self, selector: #selector(expandPlayer(notification:)), name: Notification.Name.init(rawValue: "tapOnVideo"), object: nil)
+        
     }
     
     @objc func automaticScrollImage() {
@@ -162,7 +171,7 @@ extension ViewController {
         self.view.addSubview(playerViewController.view)
         
         // Setting the frame of playerViewController's view
-        playerViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - playerHandleAreaHeight, width: self.view.bounds.width, height: playerHeight)
+        playerViewController.view.frame = CGRect(x: 4, y: self.view.frame.height - playerHandleAreaHeight, width: self.view.bounds.width - 8, height: playerHeight)
         
         // For correct displayed corner radius
         playerViewController.view.clipsToBounds = true
@@ -294,42 +303,14 @@ extension ViewController {
         }
     }
     
-}
-
-extension ViewController {
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-//        var destination: FirstPlaylistCollectionView = segue.destination as! FirstPlaylistCollectionView
-//        let text = (sender as! FirstPlaylistCollectionViewCell).nameOfVideo
-//        text.
-//
-//        print(text)
-        
-        
-//        let firstPlaylistCollectionView = segue.destination as! FirstPlaylistCollectionView
-//        firstPlaylistCollectionView.delegatePlay = self
-        
-//        if (segue.identifier == "TopChannelsCollectionViewCell") {
-//
-//        } else if (segue.identifier == "FirstPlaylistCollectionViewCell") {
-//
-//
-//
-//            animateTransitionIfNeeded(state: .collapsed, duration: 0.9)
-//
-////            let textTest = (sender as! FirstPlaylistCollectionViewCell).nameOfVideo.text
-////            print("cet textTest - \(textTest)")
-//        } else if (segue.identifier == "SecondPlaylistCollectionViewCell") {
-//
-//        }
-        
+    @objc func expandPlayer(notification: NSNotification) {
+        animateTransitionIfNeeded(state: .expanded, duration: 0.9)
     }
     
 }
 
 extension ViewController: FirstPlaylistCollectionViewDelegate {
-    func playVideo(video: String) {
-        print(video)
+    func playVideo() {
+        print("123")
     }
 }

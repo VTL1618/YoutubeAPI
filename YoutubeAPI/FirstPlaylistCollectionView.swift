@@ -8,17 +8,17 @@
 import UIKit
 
 protocol FirstPlaylistCollectionViewDelegate: AnyObject {
-    func playVideo(video: String)
+    func playVideo()
 }
 
-class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, ModelDelegate {
+class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, ModelDelegate, JSONable {
   
     // Kick off this network call
     var playlistsModel = PlaylistsModel()
     
     private var firstPlaylist: [Video] = []
     
-    weak var delegatePlay: FirstPlaylistCollectionViewDelegate?
+    weak var delegate2: FirstPlaylistCollectionViewDelegate?
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -53,7 +53,7 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
     func fetchVideos(_ videos: [Video]) {
         self.firstPlaylist = videos
         
-//        playlistsModel.getNumberOfViews()
+        ViewController.firstPlaylistVideos = videos
         
         // Refresh
         DispatchQueue.main.async {
@@ -73,24 +73,20 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
         let video = self.firstPlaylist[indexPath.row]
         cell.setCell(video)
         
-//        let views = self.videosWithStat[indexPath.row]
-//        cell.setCellWithStat(views)
-//        cell.numberOfViews.text = self.numbersOfViews[indexPath.row]
-        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-//        delegatePlay?.playVideo(video: self.firstPlaylist[indexPath.row].title)
+//        print("selected video \(firstPlaylist[indexPath.row]) with \(collectionView)! DONE!")
         
-        print("selected video")
+        let selectedVideo = firstPlaylist[indexPath.row]
         
-//        let destination = PlayerViewController()
-//        self.presen
+        let dictionaryFromVideo = selectedVideo.toDict()
+        
+        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "selectedCell"), object: nil, userInfo: dictionaryFromVideo)
         
     }
-    
 }
 
 extension FirstPlaylistCollectionView: UICollectionViewDelegateFlowLayout {

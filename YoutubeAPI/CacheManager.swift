@@ -10,6 +10,7 @@ import Foundation
 class CacheManager {
     
     static var cache: [String:Data] = [:]
+    static var cacheChannels: [String:Data] = [:]
     
     static func setVideoCache(_ url: String, _ data: Data?) {
         
@@ -22,6 +23,20 @@ class CacheManager {
         
         // Try to get the data for the specified url
         return cache[url]
+        
+    }
+    
+    static func setChannelCache(_ url: String, _ data: Data?) {
+        
+        // Store the image data and use the url as the key
+        cacheChannels[url] = data
+        
+    }
+    
+    static func getChannelCache(_ url: String) -> Data? {
+        
+        // Try to get the data for the specified url
+        return cacheChannels[url]
         
     }
     

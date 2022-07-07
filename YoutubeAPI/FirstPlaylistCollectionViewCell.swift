@@ -7,6 +7,10 @@
 
 import UIKit
 
+//protocol FirstPlaylistCollectionViewCellDelegate: AnyObject {
+//    func collectionViewCell(_ cell: UICollectionViewCell, buttonTapped)
+//}
+
 class FirstPlaylistCollectionViewCell: UICollectionViewCell {
     
     static let reuseId = "FirstPlaylistCollectionViewCell"

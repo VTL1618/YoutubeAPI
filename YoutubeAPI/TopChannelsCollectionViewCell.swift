@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import simd
 
 class TopChannelsCollectionViewCell: UICollectionViewCell {
     
     static let reuseId = "TopChannelsCollectionViewCell"
     
-    var video: Video?
+    var channel: Channel?
     
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
@@ -20,6 +21,15 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+//    let playCircle: UIButton = {
+//        let button = UIButton()
+//        let image = UIImage(named: "Play_Circle")
+//        button.setImage(image, for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.imageView?.contentMode = .scaleAspectFit
+//        return button
+//    }()
      
     // знаю что по правилам английского надо было бы писать nameOfTheChannel, но я решил сократить)
     let nameOfChannel: UILabel = {
@@ -45,6 +55,7 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         addSubview(mainImageView)
         addSubview(nameOfChannel)
         addSubview(numberOfSubscribers)
+//        addSubview(playCircle)
         // теперь надо указать какую информацию эти элементы будут принимать в методе cellForItemAt в файле TopChannelsCollectionView
         // и плюс констрейнты
         
@@ -54,10 +65,17 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         mainImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         mainImageView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
         
+        // playCircle constraints
+//        playCircle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -170).isActive = true
+//        playCircle.topAnchor.constraint(equalTo: topAnchor, constant: -157).isActive = true
+//        playCircle.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+//        playCircle.widthAnchor.constraint(equalTo: widthAnchor, constant: 30).isActive = true
+//        playCircle.heightAnchor.constraint(equalTo: widthAnchor).isActive = true
+        
         // nameOfChannel constraints
         nameOfChannel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
         nameOfChannel.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        nameOfChannel.topAnchor.constraint(equalTo: topAnchor, constant: 100).isActive = true
+        nameOfChannel.topAnchor.constraint(equalTo: topAnchor, constant: 140).isActive = true
         
         // numberOfSubscribers constraints
         numberOfSubscribers.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
@@ -76,31 +94,31 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         self.clipsToBounds = true
     }
     
-    func setCell(_ video: Video) {
+    func setCell(_ channel: Channel) {
         
-        self.video = video
-        guard self.video != nil else { return }
+        self.channel = channel
+        guard self.channel != nil else { return }
         
-        self.nameOfChannel.text = video.title
+        self.nameOfChannel.text = channel.channelName
         
-//        self.numberOfSubscribers.text = video.numberOfViews
+        self.numberOfSubscribers.text = "\(channel.numberOfSubscribers) Подписчиков"
         
-        guard self.video?.thumbnail != nil else { return }
+        guard self.channel?.channelBanner != nil else { return }
         
-        if let cacheData = CacheManager.getVideoCache(self.video!.thumbnail) {
+        if let cacheData = CacheManager.getChannelCache(self.channel!.channelBanner) {
             self.mainImageView.image = UIImage(data: cacheData)
             return
         }
         
-        let url = URL(string: self.video!.thumbnail)
+        let url = URL(string: self.channel!.channelBanner)
         let session = URLSession.shared
-        let dataData = session.dataTask(with: url!) { (data, response, error) in
+        let dataTask = session.dataTask(with: url!) { (data, response, error) in
             
             if error == nil && data != nil {
                 
-                CacheManager.setVideoCache(url!.absoluteString, data)
+                CacheManager.setChannelCache(url!.absoluteString, data)
                 
-                if url!.absoluteString != self.video?.thumbnail {
+                if url!.absoluteString != self.channel!.channelBanner {
                     return
                 }
                 
@@ -113,7 +131,7 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
             }
             
         }
-        dataData.resume()
+        dataTask.resume()
     }
         
 }

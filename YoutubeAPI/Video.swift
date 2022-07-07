@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Video: Decodable {
+struct Video: Decodable, JSONable {
     
     var videoId = ""
     var title = ""
@@ -19,7 +19,6 @@ struct Video: Decodable {
         case snippet
         case thumbnails
         case high
-//        case resourceId
         case statistics
         
         case videoId = "id"
@@ -46,8 +45,6 @@ struct Video: Decodable {
         self.thumbnail = try highContainer.decode(String.self, forKey: .thumbnail)
         
         // Parse Video ID
-//        let resourceIdContainer = try snippetContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .resourceId)
-        
         self.videoId = try container.decode(String.self, forKey: .videoId)
         
         // Parse numberOfViews

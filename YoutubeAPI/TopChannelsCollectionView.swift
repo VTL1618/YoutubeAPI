@@ -7,11 +7,11 @@
 
 import UIKit
 
-class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, ModelDelegate {
+class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, ChannelsModelDelegate {
     
-    var model = PlaylistsModel()
+    var model = ChannelsModel()
     
-    private var channels: [Video] = []
+    private var channels: [Channel] = []
 
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -35,9 +35,9 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         showsVerticalScrollIndicator = false
         isPagingEnabled = true
         
-        model.delegate = self
+        model.channelDelegate = self
         
-        model.getVideos(playlist: APIConstants.SECOND_PLAYLIST_API)
+        model.getChannels(playlist: APIConstants.CHANNELS_API)
     }
     
     required init?(coder: NSCoder) {
@@ -46,8 +46,8 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
     
     // MARK: - PlaylistsModel Delegate
     
-    func fetchVideos(_ videos: [Video]) {
-        self.channels = videos
+    func fetchChannels(_ channels: [Channel]) {
+        self.channels = channels
         
         // Refresh
         DispatchQueue.main.async {
@@ -64,13 +64,19 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueReusableCell(withReuseIdentifier: TopChannelsCollectionViewCell.reuseId, for: indexPath) as! TopChannelsCollectionViewCell
         
-        let video = self.channels[indexPath.row]
-        cell.setCell(video)
+        let channel = self.channels[indexPath.row]
+        cell.setCell(channel)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let selectedVideo = channels[indexPath.row]
+        
+        let dictionaryFromVideo = selectedVideo.toDict()
+        
+        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "selectedChannel"), object: nil, userInfo: dictionaryFromVideo)
         
     }
 
