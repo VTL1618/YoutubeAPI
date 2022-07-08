@@ -120,7 +120,7 @@ class ViewController: UIViewController {
         secondPlaylistCollectionView.topAnchor.constraint(equalTo: secondPlaylistName.bottomAnchor, constant: 15).isActive = true
         secondPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
                         
-        DispatchQueue.main.async { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [self] in
             timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
         }
         
