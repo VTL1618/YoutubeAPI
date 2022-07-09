@@ -71,9 +71,10 @@ class PlaylistsModel {
 struct ConstantsForChannels {
     static let leftDistanceToView: CGFloat = 16
     static let rightDistanceToView: CGFloat = 16
-    static let galleryMinimumLineSpacing: CGFloat = 32
+    static let galleryMinimumLineSpacing: CGFloat = 0
     // теперь можем вычислить ширину нашей ячейки в top карусели
-    static let galleryItemWidth = UIScreen.main.bounds.width - ConstantsForChannels.leftDistanceToView - ConstantsForChannels.rightDistanceToView
+//    static let galleryItemWidth = UIScreen.main.bounds.width - ConstantsForChannels.leftDistanceToView - ConstantsForChannels.rightDistanceToView
+    static let galleryItemWidth = UIScreen.main.bounds.width
 }
 
 struct ConstantsForPlaylist {

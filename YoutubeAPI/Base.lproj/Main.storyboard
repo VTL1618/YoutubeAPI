@@ -15,19 +15,10 @@
                     <view key="view" contentMode="scaleToFill" id="9gA-AI-ZZL">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Nvk-0E-YaJ">
-                                <rect key="frame" x="149" y="351" width="116" height="26"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </pageControl>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="icd-0v-Q3j"/>
                         <color key="backgroundColor" red="0.113761507" green="0.1048973277" blue="0.150441885" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="YouTube API" id="CCC-oA-NNk"/>
-                    <connections>
-                        <outlet property="dots" destination="Nvk-0E-YaJ" id="nQ8-7y-BGy"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wgt-5S-7eL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

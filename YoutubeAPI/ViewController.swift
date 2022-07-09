@@ -13,14 +13,20 @@ enum PlayerState {
 }
 
 class ViewController: UIViewController {
-        
-    private var topChannelsCollectionView = TopChannelsCollectionView()
+    
+    private lazy var topChannelsCollectionView = TopChannelsCollectionView()
     private var firstPlaylistCollectionView = FirstPlaylistCollectionView()
     private var secondPlaylistCollectionView = SecondPlaylistCollectionView()
     
     static var listOfChannelsVideos: [Video] = []
     static var firstPlaylistVideos: [Video] = []
     static var secondPlaylistVideos: [Video] = []
+    
+    var dots: UIPageControl! = {
+        let dots = UIPageControl()
+        dots.currentPage = 0
+        return dots
+    }()
     
     var playerViewController: PlayerViewController!
     var visualEffectView: UIVisualEffectView!
@@ -38,8 +44,6 @@ class ViewController: UIViewController {
     var runningAnimations: [UIViewPropertyAnimator] = []
     // We wand to make animations interruptible and interactive, we should also store the progress of our animation when it interrupted
     var animationProgressWhenInterrupted: CGFloat = 0
-        
-    @IBOutlet var dots: UIPageControl!
     
     var timer = Timer()
     var counter = 0
@@ -72,6 +76,7 @@ class ViewController: UIViewController {
         view.addSubview(firstPlaylistCollectionView)
         view.addSubview(secondPlaylistName)
         view.addSubview(secondPlaylistCollectionView)
+        view.addSubview(dots)
        
         // MARK: - add constraints for topChannelsCollectionView
         // и закрепим с помощью констрейнтов
@@ -84,18 +89,14 @@ class ViewController: UIViewController {
         dots.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         dots.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         dots.topAnchor.constraint(equalTo: topChannelsCollectionView.bottomAnchor, constant: 10).isActive = true
-//        dots.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        
+        dots.widthAnchor.constraint(equalToConstant: 100).isActive = true
+
         dots.translatesAutoresizingMaskIntoConstraints = false
-        
-//        dots.numberOfPages = self.topChannelsCollectionView.getCountOfChannels()
-        
-        dots.numberOfPages = 3
         
         // MARK: - add constraints for firstPlaylistName
         firstPlaylistName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         firstPlaylistName.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        firstPlaylistName.topAnchor.constraint(equalTo: dots.bottomAnchor, constant: 18).isActive = true
+        firstPlaylistName.topAnchor.constraint(equalTo: topChannelsCollectionView.bottomAnchor, constant: 38).isActive = true
         
         firstPlaylistName.translatesAutoresizingMaskIntoConstraints = false
         
@@ -104,9 +105,7 @@ class ViewController: UIViewController {
         firstPlaylistCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         firstPlaylistCollectionView.topAnchor.constraint(equalTo: firstPlaylistName.bottomAnchor, constant: 15).isActive = true
         firstPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 130).isActive = true
-        
-//        firstPlaylistCollectionView.fetchVideos(PlaylistsModel.getVideos())
-        
+                
         // MARK: - add constraints for secondPlaylistName
         secondPlaylistName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         secondPlaylistName.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -119,10 +118,6 @@ class ViewController: UIViewController {
         secondPlaylistCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         secondPlaylistCollectionView.topAnchor.constraint(equalTo: secondPlaylistName.bottomAnchor, constant: 15).isActive = true
         secondPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-                        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [self] in
-            timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
-        }
         
         // Setup our player
         setupPlayer()
@@ -130,19 +125,31 @@ class ViewController: UIViewController {
         // Open Player By Tap On Cell
         NotificationCenter.default.addObserver(self, selector: #selector(expandPlayer(notification:)), name: Notification.Name.init(rawValue: "tapOnVideo"), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(setupDots(notification:)), name: Notification.Name.init(rawValue: "setupDots"), object: nil)
+        
+        // Automatic scroll channels
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
+            timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
+        }
+        
+    }
+
+    // Setup dots
+    @objc func setupDots(notification: NSNotification) {
+        dots.numberOfPages = self.topChannelsCollectionView.getCountOfChannels()
     }
     
     @objc func automaticScrollImage() {
-        
+
         if counter < dots.numberOfPages - 1 {
             counter += 1
         } else {
             counter = 0
         }
-        
+
         self.topChannelsCollectionView.scrollToItem(at: IndexPath(item: counter, section: 0), at: .centeredHorizontally, animated: true)
         dots.currentPage = counter
-        
+
     }
 
 }

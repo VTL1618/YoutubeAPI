@@ -17,6 +17,8 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = #colorLiteral(red: 0.113761507, green: 0.1048973277, blue: 0.150441885, alpha: 1)
+        imageView.layer.cornerRadius = 5
+        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -42,7 +44,7 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
     
     let numberOfSubscribers: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = #colorLiteral(red: 0.6234598756, green: 0.6235695481, blue: 0.6234529018, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -53,8 +55,8 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         
         // добавляем все элементы в нашу ячейку
         addSubview(mainImageView)
-        addSubview(nameOfChannel)
-        addSubview(numberOfSubscribers)
+        mainImageView.addSubview(nameOfChannel)
+        mainImageView.addSubview(numberOfSubscribers)
 //        addSubview(playCircle)
         // теперь надо указать какую информацию эти элементы будут принимать в методе cellForItemAt в файле TopChannelsCollectionView
         // и плюс констрейнты
@@ -73,14 +75,15 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
 //        playCircle.heightAnchor.constraint(equalTo: widthAnchor).isActive = true
         
         // nameOfChannel constraints
-        nameOfChannel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
-        nameOfChannel.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        nameOfChannel.topAnchor.constraint(equalTo: topAnchor, constant: 140).isActive = true
+        nameOfChannel.leadingAnchor.constraint(equalTo: mainImageView.leadingAnchor, constant: 32).isActive = true
+//        nameOfChannel.trailingAnchor.constraint(equalTo: mainImageView.trailingAnchor).isActive = true
+        nameOfChannel.topAnchor.constraint(equalTo: mainImageView.topAnchor, constant: 140).isActive = true
+        nameOfChannel.widthAnchor.constraint(equalTo: mainImageView.widthAnchor, multiplier: 1/1.65).isActive = true
         
         // numberOfSubscribers constraints
-        numberOfSubscribers.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+        numberOfSubscribers.leadingAnchor.constraint(equalTo: mainImageView.leadingAnchor, constant: 32).isActive = true
         numberOfSubscribers.topAnchor.constraint(equalTo: nameOfChannel.bottomAnchor, constant: 8).isActive = true
-        numberOfSubscribers.widthAnchor.constraint(equalTo: widthAnchor, constant: 40).isActive = true
+        numberOfSubscribers.widthAnchor.constraint(equalTo: mainImageView.widthAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) {
@@ -106,7 +109,7 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         guard self.channel?.channelBanner != nil else { return }
         
         if let cacheData = CacheManager.getChannelCache(self.channel!.channelBanner) {
-            self.mainImageView.image = UIImage(data: cacheData)
+            self.mainImageView.image = UIImage(data: cacheData)?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -16, bottom: 0, right: -16))
             return
         }
         
@@ -122,7 +125,7 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
                     return
                 }
                 
-                let image = UIImage(data: data!)
+                let image = UIImage(data: data!)?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -16, bottom: 0, right: -16))
                 
                 DispatchQueue.main.async {
                     self.mainImageView.image = image
@@ -132,6 +135,8 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
             
         }
         dataTask.resume()
+        
+        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "setupDots"), object: nil)
     }
         
 }

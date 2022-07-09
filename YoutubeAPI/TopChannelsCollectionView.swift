@@ -29,11 +29,14 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         layout.minimumLineSpacing = ConstantsForChannels.galleryMinimumLineSpacing
         
         // и св-во CollectionView, которое отвечает за принятие отступов
-        contentInset = UIEdgeInsets(top: 0, left: ConstantsForChannels.leftDistanceToView, bottom: 0, right: ConstantsForChannels.rightDistanceToView)
+//        contentInset = UIEdgeInsets(top: 0, left: ConstantsForChannels.leftDistanceToView, bottom: 0, right: ConstantsForChannels.rightDistanceToView)
+//        contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
         isPagingEnabled = true
+        
+//        dots.numberOfPages = channels.count
         
         model.channelDelegate = self
         
@@ -43,6 +46,8 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
     
     // MARK: - PlaylistsModel Delegate
     
@@ -85,7 +90,7 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
 extension TopChannelsCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: ConstantsForChannels.galleryItemWidth, height: frame.height)
+        return CGSize(width: frame.width, height: frame.height)
     }
     
 }

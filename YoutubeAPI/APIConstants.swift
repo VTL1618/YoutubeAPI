@@ -15,7 +15,7 @@ struct APIConstants {
     
     static var SECOND_PLAYLIST_API = "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=RH9cezXEFS0&id=kV__iZuxDGE&id=GByi_j-7Q2E&id=pJIKPzZTJXM&id=QuMWSrJyt3o&id=JCzFO1dFF-k&id=S5WaFx8rx54&id=72cAe_2LAFQ&id=XKfgdkcIUxw&id=m43rh-pI0P0&key=\(APIConstants.API_KEY)"
     
-    static var CHANNELS_API = "https://youtube.googleapis.com/youtube/v3/channels?part=brandingSettings%2Csnippet%2CcontentDetails%2Cstatistics&id=UCE_M8A5yxnLfW0KghEeajjw&id=UCfNrBzcNw_7ymcDi1CK_C8&id=UCMCgOm8GZkHp8zJ6l7_hIuA&id=UCbTw29mcP12YlTt1EpUaVJw&key=\(APIConstants.API_KEY)"
+    static var CHANNELS_API = "https://youtube.googleapis.com/youtube/v3/channels?part=brandingSettings%2Csnippet%2CcontentDetails%2Cstatistics&id=UCE_M8A5yxnLfW0KghEeajjw&id=UCN-sc1xJr-QQNj_uNIM9wTA&id=UCMCgOm8GZkHp8zJ6l7_hIuA&id=UCbTw29mcP12YlTt1EpUaVJw&key=\(APIConstants.API_KEY)"
     
     static var UPLOADS_API = "https://youtube.com/embed/videoseries?list="
     

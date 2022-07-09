@@ -445,6 +445,8 @@ extension PlayerViewController {
         let channelObject = notification.userInfo as? [String: Any] ?? [:]
         
         print("GOT IT !!!")
+        
+        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "tapOnVideo"), object: nil)
                 
         // But first. Clear the fields (probably from the previous video)
         self.titleOfVideoLabel.text = ""
