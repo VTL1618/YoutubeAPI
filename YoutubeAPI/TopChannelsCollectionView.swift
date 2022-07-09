@@ -47,8 +47,6 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
     // MARK: - PlaylistsModel Delegate
     
     func fetchChannels(_ channels: [Channel]) {
@@ -73,6 +71,12 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         cell.setCell(channel)
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == channels.count - 1 {
+            
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

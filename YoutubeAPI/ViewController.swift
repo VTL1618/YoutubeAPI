@@ -14,6 +14,9 @@ enum PlayerState {
 
 class ViewController: UIViewController {
     
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    
     private lazy var topChannelsCollectionView = TopChannelsCollectionView()
     private var firstPlaylistCollectionView = FirstPlaylistCollectionView()
     private var secondPlaylistCollectionView = SecondPlaylistCollectionView()
@@ -71,51 +74,72 @@ class ViewController: UIViewController {
         
         // добавим collection views и элементы на экран
         // делается это через view
-        view.addSubview(topChannelsCollectionView)
-        view.addSubview(firstPlaylistName)
-        view.addSubview(firstPlaylistCollectionView)
-        view.addSubview(secondPlaylistName)
-        view.addSubview(secondPlaylistCollectionView)
-        view.addSubview(dots)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(topChannelsCollectionView)
+        contentView.addSubview(firstPlaylistName)
+        contentView.addSubview(firstPlaylistCollectionView)
+        contentView.addSubview(secondPlaylistName)
+        contentView.addSubview(secondPlaylistCollectionView)
+        contentView.addSubview(dots)
+        
+        // MARK: - add constraints for scrollView and contentView
+        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        scrollView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        let bottom = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        bottom.priority = UILayoutPriority(rawValue: 999)
+        bottom.isActive = true
+//        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 100)
+                
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        contentView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor).isActive = true
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        contentView.translatesAutoresizingMaskIntoConstraints = false
        
         // MARK: - add constraints for topChannelsCollectionView
         // и закрепим с помощью констрейнтов
-        topChannelsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        topChannelsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        topChannelsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6).isActive = true
+        topChannelsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        topChannelsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        topChannelsCollectionView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 6).isActive = true
         topChannelsCollectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
                 
         // MARK: - add constraints for dots
-        dots.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        dots.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        dots.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        dots.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         dots.topAnchor.constraint(equalTo: topChannelsCollectionView.bottomAnchor, constant: 10).isActive = true
         dots.widthAnchor.constraint(equalToConstant: 100).isActive = true
 
         dots.translatesAutoresizingMaskIntoConstraints = false
         
         // MARK: - add constraints for firstPlaylistName
-        firstPlaylistName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        firstPlaylistName.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        firstPlaylistName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        firstPlaylistName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         firstPlaylistName.topAnchor.constraint(equalTo: topChannelsCollectionView.bottomAnchor, constant: 38).isActive = true
         
         firstPlaylistName.translatesAutoresizingMaskIntoConstraints = false
         
         // MARK: - add constraints for firstPlaylistCollectionView
-        firstPlaylistCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        firstPlaylistCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        firstPlaylistCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        firstPlaylistCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         firstPlaylistCollectionView.topAnchor.constraint(equalTo: firstPlaylistName.bottomAnchor, constant: 15).isActive = true
         firstPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 130).isActive = true
                 
         // MARK: - add constraints for secondPlaylistName
-        secondPlaylistName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        secondPlaylistName.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        secondPlaylistName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        secondPlaylistName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         secondPlaylistName.topAnchor.constraint(equalTo: firstPlaylistCollectionView.bottomAnchor, constant: 36).isActive = true
         
         secondPlaylistName.translatesAutoresizingMaskIntoConstraints = false
 
         // MARK: - add constraints for secondPlaylistCollectionView
-        secondPlaylistCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        secondPlaylistCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        secondPlaylistCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        secondPlaylistCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         secondPlaylistCollectionView.topAnchor.constraint(equalTo: secondPlaylistName.bottomAnchor, constant: 15).isActive = true
         secondPlaylistCollectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         
@@ -127,20 +151,19 @@ class ViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(setupDots(notification:)), name: Notification.Name.init(rawValue: "setupDots"), object: nil)
         
-        // Automatic scroll channels
+        // Automatic scroll channels carousel
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
-            timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: 8.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
         }
         
     }
 
-    // Setup dots
+    // Setup number of dots
     @objc func setupDots(notification: NSNotification) {
         dots.numberOfPages = self.topChannelsCollectionView.getCountOfChannels()
     }
     
     @objc func automaticScrollImage() {
-
         if counter < dots.numberOfPages - 1 {
             counter += 1
         } else {
@@ -149,7 +172,6 @@ class ViewController: UIViewController {
 
         self.topChannelsCollectionView.scrollToItem(at: IndexPath(item: counter, section: 0), at: .centeredHorizontally, animated: true)
         dots.currentPage = counter
-
     }
 
 }
@@ -166,7 +188,6 @@ extension ViewController {
         
         // Now use our main view and add the visualEffectView as a Subview
         self.view.addSubview(visualEffectView)
-//        visualEffectView.isHidden = true
         visualEffectView.isUserInteractionEnabled = false
         
         // Now we can already load our playerViewController with nibName (name of .xib)
@@ -260,11 +281,9 @@ extension ViewController {
             let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
                 switch state {
                 case .expanded:
-//                    self.visualEffectView.isHidden = false
                     self.visualEffectView.effect = UIBlurEffect(style: .dark)
                 case .collapsed:
                     self.visualEffectView.effect = nil
-//                    self.visualEffectView.isUserInteractionEnabled = false
                 }
             }
             
@@ -314,10 +333,4 @@ extension ViewController {
         animateTransitionIfNeeded(state: .expanded, duration: 0.9)
     }
     
-}
-
-extension ViewController: FirstPlaylistCollectionViewDelegate {
-    func playVideo() {
-        print("123")
-    }
 }

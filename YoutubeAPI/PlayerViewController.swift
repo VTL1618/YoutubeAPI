@@ -113,27 +113,6 @@ class PlayerViewController: UIViewController {
         return view
     }()
     
-//    lazy var playButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        let image = UIImage(named: "Play")
-//        button.setImage(image, for: .normal)
-//        button.contentMode = .center
-//        button.imageView?.contentMode = .scaleAspectFit
-//        button.tintColor = .white
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//
-//        button.addTarget(self, action: #selector(tapPlay), for: .touchUpInside)
-//
-//        button.isHidden = true
-//
-//        return button
-//    }()
-//
-//    @objc func tapPlay() {
-//        print("play player")
-//        player?.play()
-//    }
-    
     lazy var pausePlayButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(named: "Play")
@@ -240,7 +219,6 @@ class PlayerViewController: UIViewController {
         view.addSubview(titleOfVideoLabel)
         view.addSubview(numberOfViewsLabel)
         view.addSubview(pausePlayButton)
-//        view.addSubview(playButton)
         view.addSubview(nextButton)
         view.addSubview(previousButton)
         view.addSubview(soundMaxButton)
