@@ -314,31 +314,6 @@ class PlayerViewController: UIViewController {
         
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//
-//        // But first. Clear the fields (probably from the previous video)
-//        titleOfVideoLabel.text = ""
-//        numberOfViewsLabel.text = ""
-//
-//        // Check if there's a video
-//        guard video != nil else { return }
-//
-//        // Creat the embed URL
-//        let embedUrlString = APIConstants.YOUTUBE_EMBED_URL + video!.videoId
-//
-//        // Load it into the webview
-//        let url = URL(string: embedUrlString)
-//        let request = URLRequest(url: url!)
-//        webView.load(request)
-//
-//        // Set to title
-//        titleOfVideoLabel.text = video!.title
-//
-//        // Set the number of views
-//        numberOfViewsLabel.text = "\(video!.numberOfViews) просмотров"
-//
-//    }
-    
     func addVerticalGradientLayer(topColor: UIColor, bottomColor: UIColor) {
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
@@ -387,23 +362,8 @@ class PlayerViewController: UIViewController {
                 }
                 
             })
-            
-            
-            
-//            player?.addObserver(self, forKeyPath: "currentItem.loaded", options: .new, context: nil)
-//
-//            NotificationCenter.default.addObserver(self, selector: #selector(getChannelObject(_:)), name: Notification.Name.init(rawValue: "currentItem.loaded"), object: nil)
         }
     }
-    
-//    func observeValue(forKeyPath: String?, ofObject: Any?, change: [String: Any]?, context: UnsafeMutableRawPointer) {
-//
-//        if forKeyPath == "currentItem.loaded" {
-//            isPlaying = true
-//            print("I am listening")
-//
-//        }
-//    }
     
 }
 
@@ -429,9 +389,7 @@ extension PlayerViewController {
         self.currentUrl = url
         let request = URLRequest(url: url!)
         webView.load(request)
-        
-//        self.webView.load(withVideoId: String(describing: videoObject["videoId"]))
-        
+                
         // Set to title
         self.titleOfVideoLabel.text = videoObject["title"] as? String
         
@@ -459,9 +417,7 @@ extension PlayerViewController {
         let url = URL(string: embedUrlString)
         let request = URLRequest(url: url!)
         webView.load(request)
-        
-//        self.webView.load(withVideoId: String(describing: channelObject["videoId"]))
-        
+                
         // Set to title
         self.titleOfVideoLabel.text = channelObject["channelName"] as? String
         

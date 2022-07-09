@@ -17,21 +17,21 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = #colorLiteral(red: 0.113761507, green: 0.1048973277, blue: 0.150441885, alpha: 1)
-        imageView.layer.cornerRadius = 5
+        imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-//    let playCircle: UIButton = {
-//        let button = UIButton()
-//        let image = UIImage(named: "Play_Circle")
-//        button.setImage(image, for: .normal)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.imageView?.contentMode = .scaleAspectFit
-//        return button
-//    }()
+    let playCircle: UIButton = {
+        let button = UIButton(type: .custom)
+        let image = UIImage(named: "Play_Circle")
+        button.setImage(image, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.imageView?.contentMode = .scaleAspectFit
+        return button
+    }()
      
     // знаю что по правилам английского надо было бы писать nameOfTheChannel, но я решил сократить)
     let nameOfChannel: UILabel = {
@@ -57,7 +57,7 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         addSubview(mainImageView)
         mainImageView.addSubview(nameOfChannel)
         mainImageView.addSubview(numberOfSubscribers)
-//        addSubview(playCircle)
+        mainImageView.addSubview(playCircle)
         // теперь надо указать какую информацию эти элементы будут принимать в методе cellForItemAt в файле TopChannelsCollectionView
         // и плюс констрейнты
         
@@ -68,11 +68,10 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         mainImageView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
         
         // playCircle constraints
-//        playCircle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -170).isActive = true
-//        playCircle.topAnchor.constraint(equalTo: topAnchor, constant: -157).isActive = true
-//        playCircle.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-//        playCircle.widthAnchor.constraint(equalTo: widthAnchor, constant: 30).isActive = true
-//        playCircle.heightAnchor.constraint(equalTo: widthAnchor).isActive = true
+        playCircle.leadingAnchor.constraint(equalTo: mainImageView.leadingAnchor, constant: 32).isActive = true
+        playCircle.topAnchor.constraint(equalTo: mainImageView.topAnchor, constant: 16).isActive = true
+        playCircle.widthAnchor.constraint(equalToConstant: 46).isActive = true
+        playCircle.heightAnchor.constraint(equalTo: playCircle.widthAnchor).isActive = true
         
         // nameOfChannel constraints
         nameOfChannel.leadingAnchor.constraint(equalTo: mainImageView.leadingAnchor, constant: 32).isActive = true
