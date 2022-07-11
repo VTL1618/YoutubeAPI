@@ -203,7 +203,6 @@
 				C968E13C286294B700A8674D /* Sources */,
 				C968E13D286294B700A8674D /* Frameworks */,
 				C968E13E286294B700A8674D /* Resources */,
-				7153EFBAD96232CEF50467D9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -263,23 +262,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7153EFBAD96232CEF50467D9 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-YoutubeAPI/Pods-YoutubeAPI-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-YoutubeAPI/Pods-YoutubeAPI-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-YoutubeAPI/Pods-YoutubeAPI-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B6D1D675A54EFD7A80D8FD2E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

@@ -205,6 +205,10 @@ class PlayerViewController: UIViewController {
         blue: 233/255,
         alpha: 1)
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

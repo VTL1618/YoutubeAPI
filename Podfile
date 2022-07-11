@@ -10,6 +10,6 @@ target 'YoutubeAPI' do
   #  pod 'RxCocoa', '6.5.0'
   #  pod 'Alamofire'
   #  pod 'youtube-ios-player-helper-swift'
-     pod "youtube-ios-player-helper", "~> 1.0.4"
+  #  pod "youtube-ios-player-helper", "~> 1.0.4"
 
 end
