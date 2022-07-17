@@ -119,13 +119,15 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
         if isPlaying {
             webView.playVideo()
             pausePlayButton.setImage(UIImage(named: "Pause"), for: .normal)
+            isPlaying = false
             print("play player")
         } else {
             webView.pauseVideo()
             pausePlayButton.setImage(UIImage(named: "Play"), for: .normal)
+            isPlaying = true
             print("pause player")
         }
-        isPlaying = !isPlaying
+//        isPlaying = !isPlaying
         
 //        audioPlayer.play()
 //        view.backgroundColor = UIColor.clear
@@ -334,7 +336,6 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
     }
     
     func playerView(_ playerView: YTPlayerView, didPlayTime playTime: Float) {
-//        print("current play time: \(playTime)")
         
         // Update video length Label
         playerView.duration { (time, error) in
@@ -358,6 +359,33 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
                                    Int(playTime / 60))
         self.videoCurrentTimeLabel.text = "\(minutesString):\(secondsString)"
     }
+        
+    func playerView(_: YTPlayerView, didChangeTo: YTPlayerState) {
+
+        switch didChangeTo {
+        case YTPlayerState.unstarted:
+            pausePlayButton.setImage(UIImage(named: "Play"), for: .normal)
+            isPlaying = true
+        case YTPlayerState.buffering:
+            pausePlayButton.setImage(UIImage(named: "Pause"), for: .normal)
+            isPlaying = false
+        case YTPlayerState.playing:
+            pausePlayButton.setImage(UIImage(named: "Pause"), for: .normal)
+            isPlaying = false
+        case YTPlayerState.paused:
+            pausePlayButton.setImage(UIImage(named: "Play"), for: .normal)
+            isPlaying = true
+        case YTPlayerState.ended:
+            pausePlayButton.setImage(UIImage(named: "Play"), for: .normal)
+            isPlaying = true
+        case YTPlayerState.cued:
+            pausePlayButton.setImage(UIImage(named: "Play"), for: .normal)
+            isPlaying = true
+        default:
+            break
+        }
+    
+    }
     
 }
 
@@ -375,6 +403,7 @@ extension PlayerViewController {
         self.titleOfVideoLabel.text = ""
         self.numberOfViewsLabel.text = ""
         self.currentVideoId = nil
+        self.pausePlayButton.setImage(UIImage(named: "Play"), for: .normal)
         
         // Load videoId to webView (as URL)
         self.currentVideoId = videoObject["videoId"] as! String?
@@ -400,6 +429,7 @@ extension PlayerViewController {
         // But first. Clear the fields (probably from the previous video)
         self.titleOfVideoLabel.text = ""
         self.numberOfViewsLabel.text = ""
+        self.pausePlayButton.setImage(UIImage(named: "Play"), for: .normal)
                 
         // Load uploads into the webview
         self.currentVideoId = channelObject["uploads"] as! String?
