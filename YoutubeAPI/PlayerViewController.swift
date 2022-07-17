@@ -20,8 +20,6 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
     var video: Video?
     var currentVideoId: String?
     var durationOfVideo: Double?
-
-    var obs: NSKeyValueObservation?
     
     var webView: YTPlayerView = {
         let configuration = WKWebViewConfiguration()
