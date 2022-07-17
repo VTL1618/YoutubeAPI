@@ -85,7 +85,8 @@ class FirstPlaylistCollectionViewCell: UICollectionViewCell {
         self.nameOfVideo.text = video.title
         
         // Set number of views
-        self.numberOfViews.text = "\(video.numberOfViews) просмотра"
+        let videoViews = Int(video.numberOfViews as String)
+        self.numberOfViews.text = "\(videoViews!.formattedWithSpaces) просмотра"
         
         // Set thumbnail
         guard self.video?.thumbnail != nil else { return }

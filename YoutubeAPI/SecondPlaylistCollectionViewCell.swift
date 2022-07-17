@@ -80,7 +80,8 @@ class SecondPlaylistCollectionViewCell: UICollectionViewCell {
         
         self.nameOfVideo.text = video.title
         
-        self.numberOfViews.text = "\(video.numberOfViews) просмотра"
+        let videoViews = Int(video.numberOfViews as String)
+        self.numberOfViews.text = "\(videoViews!.formattedWithSpaces) просмотра"
         
         guard self.video!.thumbnail != "" else { return }
         

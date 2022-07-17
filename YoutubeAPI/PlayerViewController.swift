@@ -364,6 +364,7 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
 extension PlayerViewController {
 
     @objc func getVideoObject(_ notification: NSNotification) {
+        
         let videoObject = notification.userInfo as? [String: Any] ?? [:]
         
         print("GOT IT !!!")
@@ -383,7 +384,10 @@ extension PlayerViewController {
         self.titleOfVideoLabel.text = videoObject["title"] as? String
         
         // Set the number of views
-        self.numberOfViewsLabel.text = "\(String(describing: videoObject["numberOfViews"]!)) просмотров"
+        let numberOfViews: Int? = Int(videoObject["numberOfViews"]! as! String)
+        self.numberOfViewsLabel.text = "\(numberOfViews!.formattedWithSpaces) просмотров"
+//        self.numberOfViewsLabel.text = "\(String(describing: videoObject["numberOfViews"]!)) просмотров"
+        
     }
     
     @objc func getChannelObject(_ notification: NSNotification) {
@@ -405,7 +409,8 @@ extension PlayerViewController {
         self.titleOfVideoLabel.text = channelObject["channelName"] as? String
         
         // Set the number of views
-        self.numberOfViewsLabel.text = "\(String(describing: channelObject["numberOfSubscribers"]!)) Подписчиков"
+        let numberOfSubscribers = Int(channelObject["numberOfSubscribers"]! as! String)
+        self.numberOfViewsLabel.text = "\(numberOfSubscribers!.formattedWithSpaces) Подписчиков"
     }
     
     @objc func volumeChanged(_ notification: NSNotification) {
@@ -446,4 +451,17 @@ extension UIImage {
             draw(in: CGRect(origin: .zero, size: size))
         }
     }
+}
+
+extension Formatter {
+    static let withSpaces: NumberFormatter = {
+       let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.groupingSeparator = " "
+        return formatter
+    }()
+}
+
+extension Numeric {
+    var formattedWithSpaces: String { Formatter.withSpaces.string(for: self) ?? "" }
 }

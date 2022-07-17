@@ -103,7 +103,8 @@ class TopChannelsCollectionViewCell: UICollectionViewCell {
         
         self.nameOfChannel.text = channel.channelName
         
-        self.numberOfSubscribers.text = "\(channel.numberOfSubscribers) Подписчиков"
+        let subscribers = Int(channel.numberOfSubscribers as String)
+        self.numberOfSubscribers.text = "\(subscribers!.formattedWithSpaces) Подписчиков"
         
         guard self.channel?.channelBanner != nil else { return }
         
