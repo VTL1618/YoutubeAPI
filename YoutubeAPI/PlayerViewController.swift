@@ -20,6 +20,7 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
     var video: Video?
     var currentVideoId: String?
     var durationOfVideo: Double?
+    var thisVideoFrom: String?
     
     var webView: YTPlayerView = {
         let configuration = WKWebViewConfiguration()
@@ -52,7 +53,6 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
             
             webView.seek(toSeconds: seekToTime, allowSeekAhead: true)
         }
-        
     }
     
     var videoLengthLabel: UILabel = {
@@ -86,7 +86,7 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
     
     var numberOfViewsLabel: UILabel = {
         let label = UILabel()
-        label.text = "7 000 000 просмотров"
+        label.text = "264 383 289 просмотров"
         label.font = UIFont.systemFont(ofSize: 17)
         label.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.7)
         label.textAlignment = .center
@@ -112,7 +112,6 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
         return button
     }()
     
-    // Надо сделать зависимой от статуса видео
     var isPlaying = true
     
     @objc func tapPause() {
@@ -128,20 +127,6 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
             print("pause player")
         }
 //        isPlaying = !isPlaying
-        
-//        audioPlayer.play()
-//        view.backgroundColor = UIColor.clear
-//        view.addSubview(wrapperView)
-//        let volumeView = MPVolumeView(frame: wrapperView.bounds)
-//        wrapperView.addSubview(volumeView)
-        
-        // ПРОВЕРИТЬ
-//        webView.playerState { state, error in
-//            guard error != nil else { return }
-//
-//            print(state)
-//        }
-        
     }
     
     var nextButton: UIButton = {
@@ -151,8 +136,28 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
         button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.imageView?.contentMode = .scaleAspectFill
+        
+        button.addTarget(self, action: #selector(clickNextVideo), for: .touchUpInside)
+
         return button
     }()
+    
+    @objc func clickNextVideo() {
+        var notificationName: NSNotification.Name?
+        
+        switch thisVideoFrom {
+        case "fromFirstPlaylist":
+            notificationName = Notification.Name.init(rawValue: "toNextVideoInFirstPlaylist")
+        case "fromSecondPlaylist":
+            notificationName = Notification.Name.init(rawValue: "toNextVideoInSecondPlaylist")
+        case "fromChannelsList":
+            notificationName = Notification.Name.init(rawValue: "toTheNextChannel")
+        default:
+            return
+        }
+        
+        NotificationCenter.default.post(name: notificationName!, object: nil)
+    }
     
     var previousButton: UIButton = {
         let button = UIButton(type: .system)
@@ -161,8 +166,28 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
         button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.imageView?.contentMode = .scaleAspectFill
+        
+        button.addTarget(self, action: #selector(clickPreviousVideo), for: .touchUpInside)
+        
         return button
     }()
+    
+    @objc func clickPreviousVideo() {
+        var notificationName: NSNotification.Name?
+        
+        switch thisVideoFrom {
+        case "fromFirstPlaylist":
+            notificationName = Notification.Name.init(rawValue: "toPrevVideoInFirstPlaylist")
+        case "fromSecondPlaylist":
+            notificationName = Notification.Name.init(rawValue: "toPrevVideoInSecondPlaylist")
+        case "fromChannelsList":
+            notificationName = Notification.Name.init(rawValue: "toThePrevChannel")
+        default:
+            return
+        }
+        
+        NotificationCenter.default.post(name: notificationName!, object: nil)
+    }
     
 //    var soundMaxButton: UIImageView = {
 //        let image = UIImageView()
@@ -300,7 +325,9 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
 //        soundMinButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
 //        soundMinButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
                 
-        NotificationCenter.default.addObserver(self, selector: #selector(getVideoObject(_:)), name: Notification.Name.init(rawValue: "selectedCell"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(getVideoObjectFromFirstPlaylist(_:)), name: Notification.Name.init(rawValue: "selectedCellFromFirstPlaylist"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(getVideoObjectFromSecondPlaylist(_:)), name: Notification.Name.init(rawValue: "selectedCellFromSecondPlaylist"), object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(getChannelObject(_:)), name: Notification.Name.init(rawValue: "selectedChannel"), object: nil)
         
@@ -391,18 +418,56 @@ class PlayerViewController: UIViewController, YTPlayerViewDelegate {
 
 extension PlayerViewController {
 
-    @objc func getVideoObject(_ notification: NSNotification) {
+    @objc func getVideoObjectFromFirstPlaylist(_ notification: NSNotification) {
         
         let videoObject = notification.userInfo as? [String: Any] ?? [:]
         
         print("GOT IT !!!")
+        thisVideoFrom = "fromFirstPlaylist"
         
         NotificationCenter.default.post(name: Notification.Name.init(rawValue: "tapOnVideo"), object: nil)
                 
         // But first. Clear the fields (probably from the previous video)
+        self.rewindSlider.value = 0
+        self.videoLengthLabel.text = "00:00"
+        self.videoCurrentTimeLabel.text = "00:00"
         self.titleOfVideoLabel.text = ""
         self.numberOfViewsLabel.text = ""
         self.currentVideoId = nil
+        self.isPlaying = true
+        self.pausePlayButton.setImage(UIImage(named: "Play"), for: .normal)
+        
+        // Load videoId to webView (as URL)
+        self.currentVideoId = videoObject["videoId"] as! String?
+        webView.load(withVideoId: videoObject["videoId"] as! String, playerVars: ["playsinline": 1])
+                
+        // Set to title
+        self.titleOfVideoLabel.text = videoObject["title"] as? String
+        
+        // Set the number of views
+        let numberOfViews: Int? = Int(videoObject["numberOfViews"]! as! String)
+        self.numberOfViewsLabel.text = "\(numberOfViews!.formattedWithSpaces) просмотров"
+//        self.numberOfViewsLabel.text = "\(String(describing: videoObject["numberOfViews"]!)) просмотров"
+        
+    }
+    
+    @objc func getVideoObjectFromSecondPlaylist(_ notification: NSNotification) {
+        
+        let videoObject = notification.userInfo as? [String: Any] ?? [:]
+        
+        print("GOT IT !!!")
+        thisVideoFrom = "fromSecondPlaylist"
+
+        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "tapOnVideo"), object: nil)
+                
+        // But first. Clear the fields (probably from the previous video)
+        self.rewindSlider.value = 0
+        self.videoLengthLabel.text = "00:00"
+        self.videoCurrentTimeLabel.text = "00:00"
+        self.titleOfVideoLabel.text = ""
+        self.numberOfViewsLabel.text = ""
+        self.currentVideoId = nil
+        self.isPlaying = true
         self.pausePlayButton.setImage(UIImage(named: "Play"), for: .normal)
         
         // Load videoId to webView (as URL)
@@ -423,12 +488,17 @@ extension PlayerViewController {
         let channelObject = notification.userInfo as? [String: Any] ?? [:]
         
         print("GOT IT !!!")
+        thisVideoFrom = "fromChannelsList"
         
         NotificationCenter.default.post(name: Notification.Name.init(rawValue: "tapOnVideo"), object: nil)
                 
         // But first. Clear the fields (probably from the previous video)
+        self.rewindSlider.value = 0
+        self.videoLengthLabel.text = "00:00"
+        self.videoCurrentTimeLabel.text = "00:00"
         self.titleOfVideoLabel.text = ""
         self.numberOfViewsLabel.text = ""
+        self.isPlaying = true
         self.pausePlayButton.setImage(UIImage(named: "Play"), for: .normal)
                 
         // Load uploads into the webview

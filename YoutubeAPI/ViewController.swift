@@ -153,10 +153,11 @@ class ViewController: UIViewController {
         // Open Player By Tap On Cell
         NotificationCenter.default.addObserver(self, selector: #selector(expandPlayer(notification:)), name: Notification.Name.init(rawValue: "tapOnVideo"), object: nil)
         
+        // Setup dots
         NotificationCenter.default.addObserver(self, selector: #selector(setupDots(notification:)), name: Notification.Name.init(rawValue: "setupDots"), object: nil)
         
         // Automatic scroll channels carousel
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [self] in
             timer = Timer.scheduledTimer(timeInterval: 8.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
         }
         
@@ -334,6 +335,9 @@ extension ViewController {
     }
     
     @objc func expandPlayer(notification: NSNotification) {
+        if playerVisible {
+            return
+        }
         animateTransitionIfNeeded(state: .expanded, duration: 0.9)
     }
     

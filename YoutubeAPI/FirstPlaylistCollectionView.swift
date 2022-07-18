@@ -18,8 +18,10 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
     
     private var firstPlaylist: [Video] = []
     
-    weak var delegate2: FirstPlaylistCollectionViewDelegate?
-    
+    private var currentIndexPath = 0
+    private var nextIndexPath = IndexPath()
+    private var prevIndexPath = IndexPath()
+        
     init() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -42,6 +44,10 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
         playlistsModel.delegate = self
         
         playlistsModel.getVideos(playlist: APIConstants.FIRST_PLAYLIST_API)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(toNextVideo(notification:)), name: Notification.Name.init(rawValue: "toNextVideoInFirstPlaylist"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(toPreviousVideo(notification:)), name: Notification.Name.init(rawValue: "toPrevVideoInFirstPlaylist"), object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -77,16 +83,48 @@ class FirstPlaylistCollectionView: UICollectionView, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-//        print("selected video \(firstPlaylist[indexPath.row]) with \(collectionView)! DONE!")
-        
+                
         let selectedVideo = firstPlaylist[indexPath.row]
+        
+        currentIndexPath = indexPath.row
+        nextIndexPath = IndexPath(item: indexPath.row + 1, section: 0)
+        prevIndexPath = IndexPath(item: indexPath.row - 1, section: 0)
         
         let dictionaryFromVideo = selectedVideo.toDict()
         
-        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "selectedCell"), object: nil, userInfo: dictionaryFromVideo)
+        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "selectedCellFromFirstPlaylist"), object: nil, userInfo: dictionaryFromVideo)
         
     }
+    
+    @objc func toNextVideo(notification: NSNotification) {
+        if currentIndexPath < firstPlaylist.count {
+//          self.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
+            self.collectionView(self, didSelectItemAt: nextIndexPath)
+            currentIndexPath += 1
+        } else {
+            self.collectionView(self, didSelectItemAt: IndexPath(item: 0, section: 0))
+            currentIndexPath = 1
+        }
+        print("next video")
+    }
+    
+    @objc func toPreviousVideo(notification: NSNotification) {
+        if currentIndexPath > 0 {
+            self.collectionView(self, didSelectItemAt: prevIndexPath)
+            currentIndexPath -= 1
+        } else {
+            self.collectionView(self, didSelectItemAt: IndexPath(item: firstPlaylist.count - 1, section: 0))
+            currentIndexPath = firstPlaylist.count - 2
+        }
+        print("previous video")
+    }
+    
+//    override func scrollToItem(at indexPath: IndexPath, at scrollPosition: UICollectionView.ScrollPosition, animated: Bool) {
+//        super.scrollToItem(at: indexPath, at: scrollPosition, animated: animated)
+//
+//        let indexPath = IndexPath(item: currentIndexPath + 1, section: 0)
+//
+//    }
 }
 
 extension FirstPlaylistCollectionView: UICollectionViewDelegateFlowLayout {

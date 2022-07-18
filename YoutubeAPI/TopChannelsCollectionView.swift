@@ -12,6 +12,10 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
     var model = ChannelsModel()
     
     private var channels: [Channel] = []
+    
+    private var currentIndexPath = 0
+    private var nextIndexPath = IndexPath()
+    private var prevIndexPath = IndexPath()
 
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -41,6 +45,10 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         model.channelDelegate = self
         
         model.getChannels(playlist: APIConstants.CHANNELS_API)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(toNextChannel(notification:)), name: Notification.Name.init(rawValue: "toTheNextChannel"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(toPreviousVideo(notification:)), name: Notification.Name.init(rawValue: "toThePrevChannel"), object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -83,10 +91,36 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         
         let selectedVideo = channels[indexPath.row]
         
+        currentIndexPath = indexPath.row
+        nextIndexPath = IndexPath(item: indexPath.row + 1, section: 0)
+        prevIndexPath = IndexPath(item: indexPath.row - 1, section: 0)
+        
         let dictionaryFromVideo = selectedVideo.toDict()
         
         NotificationCenter.default.post(name: Notification.Name.init(rawValue: "selectedChannel"), object: nil, userInfo: dictionaryFromVideo)
         
+    }
+    
+    @objc func toNextChannel(notification: NSNotification) {
+        if currentIndexPath < channels.count {
+            self.collectionView(self, didSelectItemAt: nextIndexPath)
+            currentIndexPath += 1
+        } else {
+            self.collectionView(self, didSelectItemAt: IndexPath(item: 0, section: 0))
+            currentIndexPath = 1
+        }
+        print("next channel")
+    }
+    
+    @objc func toPreviousVideo(notification: NSNotification) {
+        if currentIndexPath > 0 {
+            self.collectionView(self, didSelectItemAt: prevIndexPath)
+            currentIndexPath -= 1
+        } else {
+            self.collectionView(self, didSelectItemAt: IndexPath(item: channels.count - 1, section: 0))
+            currentIndexPath = channels.count - 2
+        }
+        print("previous video")
     }
 
 }

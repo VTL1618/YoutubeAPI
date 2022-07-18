@@ -13,6 +13,10 @@ class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource
     var model = PlaylistsModel()
     
     var secondPlaylist: [Video] = []
+    
+    private var currentIndexPath = 0
+    private var nextIndexPath = IndexPath()
+    private var prevIndexPath = IndexPath()
 
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -35,6 +39,10 @@ class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource
         model.delegate = self
         
         model.getVideos(playlist: APIConstants.SECOND_PLAYLIST_API)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(toNextVideo(notification:)), name: Notification.Name.init(rawValue: "toNextVideoInSecondPlaylist"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(toPreviousVideo(notification:)), name: Notification.Name.init(rawValue: "toPrevVideoInSecondPlaylist"), object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -60,10 +68,36 @@ class SecondPlaylistCollectionView: UICollectionView, UICollectionViewDataSource
         
         let selectedVideo = secondPlaylist[indexPath.row]
         
+        currentIndexPath = indexPath.row
+        nextIndexPath = IndexPath(item: indexPath.row + 1, section: 0)
+        prevIndexPath = IndexPath(item: indexPath.row - 1, section: 0)
+        
         let dictionaryFromVideo = selectedVideo.toDict()
         
-        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "selectedCell"), object: nil, userInfo: dictionaryFromVideo)
+        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "selectedCellFromSecondPlaylist"), object: nil, userInfo: dictionaryFromVideo)
         
+    }
+    
+    @objc func toNextVideo(notification: NSNotification) {
+        if currentIndexPath < secondPlaylist.count {
+            self.collectionView(self, didSelectItemAt: nextIndexPath)
+            currentIndexPath += 1
+        } else {
+            self.collectionView(self, didSelectItemAt: IndexPath(item: 0, section: 0))
+            currentIndexPath = 1
+        }
+        print("next video")
+    }
+    
+    @objc func toPreviousVideo(notification: NSNotification) {
+        if currentIndexPath > 0 {
+            self.collectionView(self, didSelectItemAt: prevIndexPath)
+            currentIndexPath -= 1
+        } else {
+            self.collectionView(self, didSelectItemAt: IndexPath(item: secondPlaylist.count - 1, section: 0))
+            currentIndexPath = secondPlaylist.count - 2
+        }
+        print("previous video")
     }
     
     // MARK: - Filling with content
