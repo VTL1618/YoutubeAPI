@@ -31,6 +31,10 @@ class ViewController: UIViewController {
         return dots
     }()
     
+//    @objc func dotsTapHandler(sender: UIPageControl) {
+//        topChannelsCollectionView.scrollToItem(at: sender.currentPage, at: .centeredHorizontally, animated: true)
+//    }
+    
     var playerViewController: PlayerViewController!
     var visualEffectView: UIVisualEffectView!
     
@@ -75,6 +79,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        scrollView.delegate = self
         
         // добавим collection views и элементы на экран
         // делается это через view
@@ -156,6 +162,9 @@ class ViewController: UIViewController {
         // Setup dots
         NotificationCenter.default.addObserver(self, selector: #selector(setupDots(notification:)), name: Notification.Name.init(rawValue: "setupDots"), object: nil)
         
+        // Get current page by scroll
+        NotificationCenter.default.addObserver(self, selector: #selector(setDotsCurrentPage(notification:)), name: Notification.Name.init(rawValue: "getCurrentPage"), object: nil)
+        
         // Automatic scroll channels carousel
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [self] in
             timer = Timer.scheduledTimer(timeInterval: 8.0, target: self, selector: #selector(automaticScrollImage), userInfo: nil, repeats: true)
@@ -166,6 +175,9 @@ class ViewController: UIViewController {
     // Setup number of dots
     @objc func setupDots(notification: NSNotification) {
         dots.numberOfPages = self.topChannelsCollectionView.getCountOfChannels()
+        
+        // Dots tap handler
+        dots.addTarget(self, action: #selector(automaticScrollImage), for: .touchUpInside)
     }
     
     @objc func automaticScrollImage() {
@@ -178,8 +190,19 @@ class ViewController: UIViewController {
         self.topChannelsCollectionView.scrollToItem(at: IndexPath(item: counter, section: 0), at: .centeredHorizontally, animated: true)
         dots.currentPage = counter
     }
-
+    
+    @objc func setDotsCurrentPage(notification: NSNotification) {
+        let currentPageofChannels = notification.userInfo as? [String: Int] ?? [:]
+        dots.currentPage = currentPageofChannels["currentPage"]!
+    }
 }
+
+//extension ViewController: UIScrollViewDelegate {
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let pageIndex = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+//        dots.currentPage = pageIndex
+//    }
+//}
 
 extension ViewController {
     

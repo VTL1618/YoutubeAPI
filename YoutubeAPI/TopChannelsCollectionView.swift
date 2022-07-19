@@ -82,9 +82,11 @@ class TopChannelsCollectionView: UICollectionView, UICollectionViewDelegate, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == channels.count - 1 {
-            
-        }
+//        if indexPath.row == channels.count - 1 {
+//
+//        }
+//        dots.currentPage = indexPath.row
+        NotificationCenter.default.post(name: Notification.Name.init(rawValue: "getCurrentPage"), object: nil, userInfo: ["currentPage" : indexPath.row])
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
