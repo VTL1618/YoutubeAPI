@@ -9,7 +9,7 @@ import Foundation
 
 struct APIConstants {
     
-    static var API_KEY = "AIzaSyDOC4yPr_Z7Boy4h-fRQ57frKJgBJn2L0c"
+    static var API_KEY = ""
     
     static var FIRST_PLAYLIST_API = "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=jwmS1gc9S5A&id=E99Et5mzxv0&id=arDDZjcbaXI&id=yvX1WkFFtQI&id=9tobL8U7dQo&id=SQvM-mDkK_s&id=RUEtUaDcH2U&key=\(APIConstants.API_KEY)"
     
