@@ -11,13 +11,13 @@ protocol JSONable {}
 
 extension JSONable {
     func toDict() -> [String:Any] {
-        var dict = [String:Any]()
+        var dictionary = [String:Any]()
         let otherSelf = Mirror(reflecting: self)
         for child in otherSelf.children {
             if let key = child.label {
-                dict[key] = child.value
+                dictionary[key] = child.value
             }
         }
-        return dict
+        return dictionary
     }
 }
